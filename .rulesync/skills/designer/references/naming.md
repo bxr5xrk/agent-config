@@ -1,0 +1,15 @@
+# Naming without inventing certainty
+
+Skip new naming when the user supplies an approved name; retain exact spelling. Missing name: use the product brief to establish category, promise, audience language/market and tone. Ask only about a material missing constraint, not a generic naming questionnaire.
+
+1. Explore several relevant naming approaches: descriptive clarity, evocative metaphor, compact compound or invented name. Do not default to an AI suffix or a random fashionable syllable.
+2. Filter internally, then show a manageable shortlist, normally 5–8 strong names across different approaches. For each give exact spelling, intended meaning, likely pronunciation where relevant, fit, and one real weakness. Recommend a finalist based on the brief, not invented numerical precision.
+3. Test finalists in a sentence, a spoken introduction, a browser tab and wordmark. Inspect ambiguous characters, spelling after hearing, acronym collisions and relevant language meanings. An agent's pronunciation/readability assessment is a heuristic, not a customer test. Research uncertain meanings; do not claim fluency or cultural safety across languages not checked.
+4. Search exact and similar names in the product category and intended market using current public sources. Inspect active products and confusingly similar marks; record URLs and date. For domain/handle constraints, inspect an appropriate current source and keep statuses separate: observed in use, reported available by source, or unchecked. A failed page load, missing search hit, DNS NXDOMAIN or unregistered-looking handle does not establish purchase availability.
+5. Present remaining conflicts and choose with the user, or decide within explicit naming delegation. Basic screening is not trademark clearance. If legal clearance is requested, use the appropriate official registries/current guidance and state the scope of what was checked; never promise worldwide uniqueness. Do not register, buy or create accounts without authorization.
+
+Save the selected display name and rationale in BRAND.md; keep discarded alternatives only when they explain the decision. A working name is marked provisional wherever it could be mistaken for a selected identity. Final public identity work requires a selected name or an explicit decision to retain the provisional one. Changing a name after selection triggers a focused review of visible copy, logo, metadata, social images, analytics identifiers and URLs; do not silently rename production identifiers.
+
+Naming research is a bounded decision aid, not a reason to block every startup on exhaustive searches. If current checks are unavailable, show labelled creative candidates and preserve the availability question; do not fabricate findings.
+
+Reference, reviewed 2026-09-05: [Shopify's naming guide](https://www.shopify.com/blog/how-to-come-up-with-a-brand-name) connects values, brainstorming, language checks and feedback. The shortlist size and workflow above are this skill's practical defaults, not measured universal rules.

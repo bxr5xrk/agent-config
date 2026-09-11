@@ -1,0 +1,15 @@
+{
+  "id": "short-stable-lesson-id",
+  "role": "designer",
+  "kind": "technique",
+  "scope": "Specific conditions where this applies",
+  "rule": "One actionable principle and its observable check",
+  "rationale": "Observed mechanism, not only dissatisfaction",
+  "evidence": ["Redacted source or artifact reference"],
+  "exceptions": ["A plausible case where the rule should not apply"],
+  "supersedes": [],
+  "verification": {
+    "status": "pending",
+    "evidence": []
+  }
+}

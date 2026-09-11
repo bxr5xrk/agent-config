@@ -1,0 +1,11 @@
+# Diagnose the actual failure
+
+Read for a bug, unexplained performance regression or repeated failed repair. Establish the reported versus expected behavior and the exact route, input, state and environment. First check whether the capability exists or a configuration/access problem explains the report. A diagnosis-only request authorizes investigation and necessary local probes, not an unsolicited product fix.
+
+1. Reproduce the actual symptom with the smallest useful command or interaction. Keep the failing output, inputs and conditions. For an intermittent issue record the observed frequency; for performance, measure a representative baseline. A nearby generic error is not the same reproduction.
+2. Reduce irrelevant inputs and follow the affected caller/data/provider path. Compare a working and failing case or bisect a change only when suitable evidence is available. If reproduction requires missing access, continue useful source/log inspection and distinguish inferred causes from reproduced ones.
+3. For an uncertain cause, state a falsifiable prediction and run the cheapest discriminating probe. Change one causal variable at a time. Use narrowly scoped temporary logging or timing without recording secrets or personal payloads; avoid rewriting several layers just to see whether the symptom disappears.
+4. Once evidence identifies the cause, make the smallest authorized fix and check the [behavioral contract](behavior-checks.md). For a real regression, demonstrate failure before and success after the fix where practical. Exercise the original user scenario and a relevant adjacent failure, not only a new helper test.
+5. Remove temporary probes, preserve useful regression evidence and update affected project decisions. If the same repair fails again, revisit the hypothesis and reproduction before adding another workaround. Report a required missing input precisely while completing independent work.
+
+Adapted selectively from [AI Hero diagnosing-bugs](https://github.com/mattpocock/skills/blob/3cca18b368ae95cdbdebbff572ccafa662551015/skills/engineering/diagnosing-bugs/SKILL.md). The workflow uses observed evidence; it imposes no fixed hypothesis count, repeat count or mandatory stop before useful inspection.

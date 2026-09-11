@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "phase": "discovery",
+  "profile": "fullstack",
+  "brief_agreed": false,
+  "decisions": {
+    "language": {
+      "value": "typescript-strict",
+      "status": "user_approved"
+    },
+    "database": {
+      "value": "mongodb",
+      "status": "user_approved"
+    },
+    "frontend": {
+      "value": "next-app-router-react",
+      "status": "delegated_default"
+    },
+    "backend": {
+      "value": "fastify-when-needed",
+      "status": "delegated_default"
+    },
+    "ui": {
+      "value": "tailwind-shadcn",
+      "status": "delegated_default"
+    },
+    "analytics": {
+      "value": "posthog-when-applicable",
+      "status": "delegated_default"
+    }
+  },
+  "design": {
+    "status": "pending",
+    "selected_ids": [],
+    "override_reason": null
+  },
+  "open_questions": [],
+  "evidence": [],
+  "next_action": "Agree the product brief"
+}

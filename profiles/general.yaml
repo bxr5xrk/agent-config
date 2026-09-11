@@ -1,0 +1,9 @@
+name: general
+description: Reusable specialists and discovery workflow for every project.
+skills:
+  - grill-me
+  - designer
+  - frontend
+  - backend
+dependencies:
+  - grilling

@@ -1,0 +1,11 @@
+# Motion
+
+Make the interaction understandable and responsive in time. Read the shared [project context and model policy](../../../build/references/context.md), relevant existing motion code, and [motion judgment](references/judgment.md). A direct request works without a team kickoff.
+
+1. Define the affected behavior: user purpose, trigger, initial/final states, expected frequency, allowed interruption and reduced/static equivalent. Preserve the existing project's visual and interaction language. For an exact fix, act on it; compare alternatives only when the unresolved behavior materially changes the outcome.
+2. Use [implementation guidance](references/implementation.md) to choose the smallest suitable technique already in the project. Verify uncertain APIs against the installed version and official docs. Assign one owner to each animated property and coordinate shared files with the frontend owner.
+3. Implement the real state change and its visual response. Keep controls operable during appropriate transitions; handle cancel, reversal, retrigger, unmount and data updates. Animation completion is not the sole source of business truth. Preserve meaning when animation is removed.
+4. Run [temporal QA](references/temporal-qa.md) on the actual component. Observe normal-speed behavior, inspect intermediate states, exercise interruption and reduced motion. A static screenshot or source review cannot pass this step. If the necessary browser evidence is unavailable, finish safe independent work and report motion as unverified.
+5. Follow [closeout ownership](../../../build/references/closeout.md): standalone material changes need independent product/engineering review; a delegated builder returns evidence to its orchestration owner without duplicating reviewers. Resolve relevant findings, update project `design.md` with actual behavior and evidence, and propose transferable corrections through [learn](../../../build/internal/learn/ROLE.md). Pending candidates are not active knowledge.
+
+Return the result, the behavior actually observed, and material gaps. The [source notes](references/sources.md) explain provenance and limits; load them when borrowing a pattern or resolving conflicting advice.

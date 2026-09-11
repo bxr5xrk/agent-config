@@ -1,0 +1,62 @@
+# Agent config
+
+Personal, provider-neutral source for reusable agent instructions. Rulesync generates the native files consumed by Codex Desktop and Claude Code Desktop; additional agent hosts can be enabled later.
+
+The repository is named `agent-config`, a common convention for standalone AI-agent configuration repositories. Unlike a general `dotfiles` repository, its scope is intentionally limited to agent behavior and workflows.
+
+## Desktop support
+
+This setup is desktop-first. Rulesync is only the build and synchronization engine; it does not require using either agent through a terminal:
+
+- Codex Desktop loads standalone user skills from `~/.agents/skills` and global instructions from `~/.codex/AGENTS.md`.
+- Claude Code Desktop shares `~/.claude` configuration, skills, hooks, permissions, and MCP settings with Claude Code's other local surfaces.
+
+The official references are [OpenAI's skill locations](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills), [OpenAI's `AGENTS.md` discovery](https://learn.chatgpt.com/docs/agent-configuration/agents-md), and [Anthropic's shared Desktop configuration](https://code.claude.com/docs/en/desktop#shared-configuration).
+
+## Layout
+
+```text
+.rulesync/
+  skills/<name>/SKILL.md   reusable Agent Skills
+  rules/                   shared always-on instructions
+  subagents/               shared subagent definitions
+  hooks.jsonc              shared lifecycle hooks
+  hooks/                   hook scripts
+  mcp.jsonc                shared MCP declarations without credentials
+  permissions.jsonc        portable permission policy
+profiles/                  logical skill collections; not discovery paths
+rulesync.jsonc             targets and generation policy
+```
+
+Skills stay flat under `.rulesync/skills/` for reliable discovery. A skill owns its supporting `references/`, `scripts/`, `assets/`, and optional provider metadata. Do not edit generated `.claude/`, `.codex/`, `CLAUDE.md`, or `AGENTS.md` files directly.
+
+The `general` and `app` profiles are catalog metadata. Rulesync currently generates every skill in `.rulesync/skills/`; profiles document intended bundles for future installation tooling.
+
+Eight skill directories are present: the seven selected skills plus `grilling`, which is the runtime dependency behind `grill-me`.
+
+Only the populated `skills` feature is enabled initially. The canonical directories for rules, subagents, hooks, MCP, and permissions are ready; enable each feature in `rulesync.jsonc` after adding and validating real content.
+
+## Commands
+
+```sh
+pnpm install --frozen-lockfile
+pnpm sync:preview
+pnpm sync
+pnpm sync:check
+pnpm desktop:preview
+pnpm desktop:apply
+pnpm desktop:check
+```
+
+The `sync:*` commands generate and verify project-local adapters. The `desktop:*` commands target the user-level directories read by the desktop apps. Always review `pnpm desktop:preview` before applying a global change.
+
+At present, only skills are enabled. Rules, subagents, hooks, MCP, and permissions remain empty until each shared policy has a real implementation and a verified adapter for both hosts. Provider-specific behavior belongs in an adapter, not in the portable core.
+
+## Scope
+
+- Keep only reusable personal conventions and workflows here.
+- Keep employer-specific skills, project context, code style, and secrets in the relevant work repository as a project-local overlay.
+- Put provider-specific fields in the matching Rulesync target block instead of forking the whole skill.
+- Never commit credentials, OAuth tokens, private work data, or local `rulesync.local.jsonc` overrides.
+
+Models such as DeepSeek are reusable through the host agent that runs them. Add the host target (for example OpenCode or Cline), not a model-name directory.

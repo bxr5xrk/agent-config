@@ -1,0 +1,32 @@
+# Sources and assets
+
+Use the existing project system first. Borrow a specific pattern to solve a defined need, then inspect and adapt its code, semantics, state behavior and license. A catalog screenshot, star count or “accessible” label does not verify the assembled product.
+
+| Source | Useful role | Boundary |
+|---|---|---|
+| [shadcn/ui](https://ui.shadcn.com/docs) | Editable component source and composition patterns | Inspect the selected component's dependencies and actual behavior; defaults alone are not art direction. |
+| [coss ui](https://coss.com/ui/docs) | Accessible Base UI primitives and dense production patterns for React/Tailwind projects | Early development and Base UI beta can bring breaking changes; adopt selectively into a compatible stack rather than replacing an established system. |
+| [ReUI](https://reui.io/components) | Complex shadcn-compatible product patterns such as tables, filters, calendars and operational UI | Search the real registry/API, choose its Base UI or Radix variant to match the project and check whether the selected item is free or paid. |
+| [Tailwind Plus UI blocks](https://tailwindcss.com/plus/ui-blocks) | Professionally composed patterns when the project has the required access | Use licensed assets only in permitted end products; do not embed paid source in a reusable skill, component catalog or starter kit. |
+| [Aceternity](https://ui.aceternity.com/components) | Focused expressive components and motion inspiration | Inspect the exact component for semantics, keyboard/touch, pause and reduced motion; free and paid offerings have separate access/terms to check. |
+| [Anime.js](https://animejs.com/documentation/) | Timelines and coordinated DOM/SVG animation | Animation engine, not an interaction or accessibility system; use the motion specialist. |
+| [Component Gallery](https://component.gallery/) | Compare how real design systems solve a named component problem | Examples are research evidence, not copy-ready code; follow the original system for current guidance and licensing. |
+| [DesignSystems.one](https://www.designsystems.one/) | Compare system foundations and discover official design-system sources | Treat generated `design.md` and token snapshots as secondary summaries; verify against the official system and adapt to this product. |
+| [Design System Checklist](https://designsystemschecklist.com/) | Coverage prompts when establishing or materially revising a design system | Select only affected layers; checklist completion is not design quality or accessibility certification. |
+| [Utopia](https://utopia.fyi/) | Generate coherent fluid type, spacing and grid values for a new responsive system | Derive endpoints from actual content and supported widths; do not retrofit `clamp()` into stable project tokens without a reason. |
+| [Open Props](https://open-props.style/) | CSS-native token reference for a project starting without foundations | Import only used modules and map them to project semantic roles; never layer a second token language over an existing system. |
+| [Web Interface Guidelines](https://interfaces.rauno.me/) | Small interaction, touch and rendering details worth testing | A living, partly subjective checklist; validate each rule against standards, platform behavior and project context. |
+| Impeccable, Emil Kowalski, Jakub Krehel | Craft decisions, review lenses and examples | Curated evidence and heuristics, not unconditional rules or proof of expertise. |
+
+Check current documentation against the installed version before using APIs. Do not add competing libraries just because a source prefers one. Project-owned components often cost less to adapt than importing a new stack.
+
+## Provenance inspected 2026-09-05
+
+- [Impeccable](https://github.com/pbakaus/impeccable/tree/8dac6ae7e020c43ab10ce9b41939f6fd42627b96), canonical `skill/SKILL.src.md`, all reference modules and four agents: [Apache-2.0](https://github.com/pbakaus/impeccable/blob/8dac6ae7e020c43ab10ce9b41939f6fd42627b96/LICENSE), with a [third-party notice](https://github.com/pbakaus/impeccable/blob/8dac6ae7e020c43ab10ce9b41939f6fd42627b96/NOTICE.md) for native platform references. Reused ideas are selectively adapted; the upstream runtime/workflow is not a dependency.
+- [Emil's skills](https://github.com/emilkowalski/skills/tree/d23d7f88a2e21c9e4b1418c7abe420f5c1052ba7), all 19 skill/reference Markdown files: [MIT](https://github.com/emilkowalski/skills/blob/d23d7f88a2e21c9e4b1418c7abe420f5c1052ba7/LICENSE).
+- [Jakub's skills](https://github.com/jakubkrehel/skills/tree/267330e1adfc66a718fb65fa6918c1f06d0a689e), full skill inventory plus the relevant interface, accessibility, layout, typography, color, writing, reference-analysis, variant and stress-testing modules: [MIT](https://github.com/jakubkrehel/skills/blob/267330e1adfc66a718fb65fa6918c1f06d0a689e/LICENSE). Complement: [Rauno's interaction observations](https://rauno.me/craft/interaction-design).
+- shadcn/ui [MIT license](https://github.com/shadcn-ui/ui/blob/7c9eaba1c0a6404c990c144a654792e3313c650d/LICENSE.md); Anime.js [MIT license](https://github.com/juliangarnier/anime/blob/01b81be1df6843ccfe0a71c0699a746bf740dd77/LICENSE.md).
+- [Tailwind Plus license](https://tailwindcss.com/plus/license) and [Aceternity license](https://ui.aceternity.com/licence): inspect the actual item, access and end-product terms before reuse. Public visibility does not grant redistribution rights.
+- Additional catalogs inspected: [UI Skills](https://www.ui-skills.com/), [VibePrompt](https://vibeprompts.dev/), [Kinetics](https://kinetics.colorion.co/), [Animated Buttons](https://animatedbuttons.colorion.co/), [Forma Icon Creator](https://iconcreator.dev/), [BG.IBELICK](https://bg.ibelick.com/) and [Motion Primitives](https://motion-primitives.com/docs). They remain optional discovery or implementation references; their prompts, presets and decorative recipes are not imported as universal design rules.
+
+These instructions are an original synthesis, with no upstream component recipes or paid assets bundled. When copying MIT code preserve its copyright and permission notice; Apache-2.0 derivatives require the license, applicable notices and modification notices. Check third-party fonts, photos, icons and demos separately. Store source URL/version/license with the project asset; global learning stores a generalized decision, not a paid asset archive.
