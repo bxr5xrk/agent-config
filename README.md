@@ -1,41 +1,23 @@
 # Agent config
 
-One private, model-neutral source for reusable agent skills and configuration. Content is organized by life context, not by the model or desktop app currently using it.
+One private, model-neutral source for reusable agent configuration.
 
-## Structure
+## Content
 
 ```text
 skills/
-  common/       used in every context
-  personal/     private projects and personal workflows
-  work/         reusable work-only skills
-instructions/   future always-on instructions, split by the same scopes
-hooks/          future lifecycle hooks, split by the same scopes
-subagents/      future specialist definitions, split by the same scopes
-settings/       future portable settings, split by the same scopes
+  common/       brainstorm, grill-me, grilling
+  personal/     backend, build, designer, frontend, onboarding
 ```
 
-Every artifact has one canonical source. When applying the repository, use `common` plus exactly one context scope:
+Only folders containing real configuration belong in this repository. Add `work`, `instructions`, `hooks`, `subagents`, or `settings` only when there is actual content for them.
 
-- Personal context: `common` + `personal`.
-- Work context: `common` + `work`.
+## Apply in an agent
 
-Current content:
+There is no synchronization tool or generated configuration. Tell the agent:
 
-- `common`: `brainstorm`, `grill-me`, `grilling`, `sync-agent-config`
-- `personal`: `backend`, `build`, `designer`, `frontend`, `onboarding`
-- `work`: empty until work-safe reusable content is added
+> Read `/Users/berserk/Work/agent-config/README.md`. Synchronize all populated `common` and `personal` configuration from this repository with the current desktop agent. Discover its native configuration paths, preserve unrelated local configuration, and verify that the agent actually discovers the result.
 
-## Apply in a desktop agent
-
-There is no synchronization script or dependency. Give the target agent this instruction:
-
-> Read `/Users/berserk/Work/agent-config/skills/common/sync-agent-config/SKILL.md` and follow it to apply the `personal` configuration from this repository to the current desktop agent.
-
-Replace `personal` with `work` for a work environment. The skill makes the target-specific mapping at execution time, preserves unrelated local configuration, and verifies actual discovery by that desktop agent.
-
-## Boundaries
-
-Instructions, hooks, subagents, and settings remain canonical placeholders until real content is added. The instruction skill applies only populated artifact types supported by the target agent.
+For a work environment, replace `personal` with `work`. Prefer links to the canonical folders when the target supports them; never overwrite an entire user configuration directory.
 
 Keep secrets, credentials, employer-private data, and project-specific rules out of this repository. Those belong in the relevant private work repository as a local overlay.
