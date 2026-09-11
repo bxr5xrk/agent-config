@@ -6,7 +6,7 @@ description: >-
   defaults. Use for starting or comprehensively onboarding a project, not
   isolated feature edits.
 targets:
-  - '*'
+  - codexcli
 codexcli:
   interface:
     display_name: Onboarding

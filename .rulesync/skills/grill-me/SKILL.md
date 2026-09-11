@@ -2,7 +2,8 @@
 name: grill-me
 description: A relentless interview to sharpen a plan or design.
 targets:
-  - '*'
+  - codexcli
+  - claudecode
 disable-model-invocation: true
 codexcli:
   interface:

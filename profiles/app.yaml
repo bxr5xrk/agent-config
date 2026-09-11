@@ -1,8 +1,0 @@
-name: app
-description: End-to-end product discovery and delivery workflow.
-skills:
-  - onboarding
-  - brainstorm
-  - build
-requires:
-  - general

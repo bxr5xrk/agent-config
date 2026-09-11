@@ -5,7 +5,7 @@ description: >-
   SEO, and product analytics. Use for frontend delivery with an existing brief
   or scoped request.
 targets:
-  - '*'
+  - codexcli
 codexcli:
   interface:
     display_name: Frontend

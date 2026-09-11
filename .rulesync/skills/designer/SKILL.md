@@ -5,7 +5,7 @@ description: >-
   direction, complete interaction states and browser evidence. Use for landing
   pages, product UI, dashboards and visual or motion corrections.
 targets:
-  - '*'
+  - codexcli
 codexcli:
   interface:
     display_name: Designer

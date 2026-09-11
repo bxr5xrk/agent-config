@@ -4,12 +4,15 @@
   "private": true,
   "packageManager": "pnpm@10.33.0",
   "scripts": {
-    "sync": "rulesync generate",
-    "sync:preview": "rulesync generate --dry-run",
-    "sync:check": "rulesync generate --check",
     "desktop:preview": "rulesync generate --global --dry-run",
     "desktop:apply": "rulesync generate --global",
-    "desktop:check": "rulesync generate --global --check"
+    "desktop:check": "rulesync generate --global --check",
+    "claude:preview": "rulesync generate --global --targets claudecode --dry-run",
+    "claude:apply": "rulesync generate --global --targets claudecode",
+    "claude:check": "rulesync generate --global --targets claudecode --check",
+    "codex:preview": "rulesync generate --global --targets codexcli --dry-run",
+    "codex:apply": "rulesync generate --global --targets codexcli",
+    "codex:check": "rulesync generate --global --targets codexcli --check"
   },
   "devDependencies": {
     "rulesync": "16.28.0"

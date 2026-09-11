@@ -5,7 +5,7 @@ description: >-
   background integrations. Use when server behavior, data integrity,
   authorization or runtime reliability changes.
 targets:
-  - '*'
+  - codexcli
 codexcli:
   interface:
     display_name: Backend

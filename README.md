@@ -28,11 +28,16 @@ profiles/                  logical skill collections; not discovery paths
 rulesync.jsonc             targets and generation policy
 ```
 
-Skills stay flat under `.rulesync/skills/` for reliable discovery. A skill owns its supporting `references/`, `scripts/`, `assets/`, and optional provider metadata. Do not edit generated `.claude/`, `.codex/`, `CLAUDE.md`, or `AGENTS.md` files directly.
+`.rulesync/` is the single canonical source because it is Rulesync's default input tree. Skills stay flat under `.rulesync/skills/`; each skill owns its supporting `references/`, `scripts/`, `assets/`, and optional provider metadata.
 
-The `general` and `app` profiles are catalog metadata. Rulesync currently generates every skill in `.rulesync/skills/`; profiles document intended bundles for future installation tooling.
+Generated `.agents/` and `.claude/` directories are not source files and are not committed. Desktop synchronization writes the native outputs directly to the user directories. Do not edit generated files there; edit `.rulesync/` and synchronize again.
 
-Eight skill directories are present: the seven selected skills plus `grilling`, which is the runtime dependency behind `grill-me`.
+The `shared` and `codex-personal` profiles document the intended distribution:
+
+- Shared between Codex and Claude Code: `grilling`, `grill-me`, `brainstorm`.
+- Codex only: `backend`, `build`, `designer`, `frontend`, `onboarding`.
+
+The `targets` field in each canonical `SKILL.md` enforces this distribution. `codexcli` is Rulesync's adapter identifier for Codex's local file format; the generated user files are also what Codex Desktop reads.
 
 Only the populated `skills` feature is enabled initially. The canonical directories for rules, subagents, hooks, MCP, and permissions are ready; enable each feature in `rulesync.jsonc` after adding and validating real content.
 
@@ -40,15 +45,15 @@ Only the populated `skills` feature is enabled initially. The canonical director
 
 ```sh
 pnpm install --frozen-lockfile
-pnpm sync:preview
-pnpm sync
-pnpm sync:check
 pnpm desktop:preview
 pnpm desktop:apply
 pnpm desktop:check
+pnpm claude:preview
+pnpm claude:apply
+pnpm claude:check
 ```
 
-The `sync:*` commands generate and verify project-local adapters. The `desktop:*` commands target the user-level directories read by the desktop apps. Always review `pnpm desktop:preview` before applying a global change.
+The `desktop:*` commands update both desktop agents. The `claude:*` and `codex:*` commands update one agent only. Always review the matching `*:preview` command before applying a change.
 
 At present, only skills are enabled. Rules, subagents, hooks, MCP, and permissions remain empty until each shared policy has a real implementation and a verified adapter for both hosts. Provider-specific behavior belongs in an adapter, not in the portable core.
 

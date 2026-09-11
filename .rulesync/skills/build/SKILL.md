@@ -5,7 +5,7 @@ description: >-
   coordinating design, frontend and backend specialists, integration and
   independent checks.
 targets:
-  - '*'
+  - codexcli
 codexcli:
   interface:
     display_name: Build

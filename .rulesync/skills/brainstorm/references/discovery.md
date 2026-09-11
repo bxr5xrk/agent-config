@@ -20,7 +20,7 @@ After each answer, update the brief rather than keeping the decision only in cha
 
 Before handoff, another agent should be able to describe the first useful outcome, exclusions and acceptance conditions without inventing product intent. A partial brief can still have research or prototypes in progress; mark these honestly.
 
-Use the shared [domain procedure](../../build/references/domain.md) when language or business invariants need sharpening. Capture actual decisions as they land; synthesizing the final brief does not require repeating the interview. Include a compact state/schema example when it expresses an agreed decision more precisely than prose.
+Use the local [domain procedure](domain.md) when language or business invariants need sharpening. Capture actual decisions as they land; synthesizing the final brief does not require repeating the interview. Include a compact state/schema example when it expresses an agreed decision more precisely than prose.
 
 For a large uncertain effort, expand the existing decision table with real prerequisites and the next action: research, prototype or a user decision. Resolve currently actionable unknowns first while independent exploration proceeds. Distinguish blocked, still vague, deferred and out of scope. Keep this map local and proportional; a small feature needs no planning framework or ticket system.
 

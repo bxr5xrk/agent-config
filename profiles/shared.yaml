@@ -1,0 +1,6 @@
+name: shared
+description: Skills installed into both Codex and Claude Code.
+skills:
+  - grilling
+  - grill-me
+  - brainstorm
