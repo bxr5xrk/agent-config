@@ -1,0 +1,4 @@
+interface:
+  display_name: "Build"
+  short_description: "Turn an agreed brief into a verified project"
+  default_prompt: "Use $build to implement the agreed brief and coordinate specialists, reviews, and corrections."

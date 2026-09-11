@@ -1,0 +1,4 @@
+interface:
+  display_name: Designer
+  short_description: Shape a fitting, polished product interface
+  default_prompt: Use $designer to improve this interface using its existing design context.

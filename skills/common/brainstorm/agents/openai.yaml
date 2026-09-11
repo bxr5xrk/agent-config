@@ -1,0 +1,4 @@
+interface:
+  display_name: Brainstorm
+  short_description: Stress-test an idea into an agreed brief
+  default_prompt: Use $brainstorm to clarify my product idea and prepare an agreed brief.

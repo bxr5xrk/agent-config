@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend"
+  short_description: "Deliver UI, states, SEO and analytics"
+  default_prompt: "Use $frontend to implement this interface with its real states and verification."

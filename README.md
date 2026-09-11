@@ -1,67 +1,77 @@
 # Agent config
 
-Personal, provider-neutral source for reusable agent instructions. Rulesync generates the native files consumed by Codex Desktop and Claude Code Desktop; additional agent hosts can be enabled later.
+One private, model-neutral source for reusable agent skills and configuration. Content is organized by life context, not by the model or desktop app currently using it.
 
-The repository is named `agent-config`, a common convention for standalone AI-agent configuration repositories. Unlike a general `dotfiles` repository, its scope is intentionally limited to agent behavior and workflows.
-
-## Desktop support
-
-This setup is desktop-first. Rulesync is only the build and synchronization engine; it does not require using either agent through a terminal:
-
-- Codex Desktop loads standalone user skills from `~/.agents/skills` and global instructions from `~/.codex/AGENTS.md`.
-- Claude Code Desktop shares `~/.claude` configuration, skills, hooks, permissions, and MCP settings with Claude Code's other local surfaces.
-
-The official references are [OpenAI's skill locations](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills), [OpenAI's `AGENTS.md` discovery](https://learn.chatgpt.com/docs/agent-configuration/agents-md), and [Anthropic's shared Desktop configuration](https://code.claude.com/docs/en/desktop#shared-configuration).
-
-## Layout
+## Structure
 
 ```text
-.rulesync/
-  skills/<name>/SKILL.md   reusable Agent Skills
-  rules/                   shared always-on instructions
-  subagents/               shared subagent definitions
-  hooks.jsonc              shared lifecycle hooks
-  hooks/                   hook scripts
-  mcp.jsonc                shared MCP declarations without credentials
-  permissions.jsonc        portable permission policy
-profiles/                  logical skill collections; not discovery paths
-rulesync.jsonc             targets and generation policy
+skills/
+  common/       used in every context
+  personal/     private projects and personal workflows
+  work/         reusable work-only skills
+instructions/   future always-on instructions, split by the same scopes
+hooks/          future lifecycle hooks, split by the same scopes
+subagents/      future specialist definitions, split by the same scopes
+settings/       future portable settings, split by the same scopes
+profiles/       selects scopes for a context
+scripts/        safe synchronization adapters
 ```
 
-`.rulesync/` is the single canonical source because it is Rulesync's default input tree. Skills stay flat under `.rulesync/skills/`; each skill owns its supporting `references/`, `scripts/`, `assets/`, and optional provider metadata.
+Every skill exists once. A desktop agent sees it through a symlink from its native user skill directory to the canonical folder in this repository.
 
-Generated `.agents/` and `.claude/` directories are not source files and are not committed. Desktop synchronization writes the native outputs directly to the user directories. Do not edit generated files there; edit `.rulesync/` and synchronize again.
+Current profiles:
 
-The `shared` and `codex-personal` profiles document the intended distribution:
+- `personal` = `common` + `personal`
+- `work` = `common` + `work`
 
-- Shared between Codex and Claude Code: `grilling`, `grill-me`, `brainstorm`.
-- Codex only: `backend`, `build`, `designer`, `frontend`, `onboarding`.
+Current content:
 
-The `targets` field in each canonical `SKILL.md` enforces this distribution. `codexcli` is Rulesync's adapter identifier for Codex's local file format; the generated user files are also what Codex Desktop reads.
+- `common`: `brainstorm`, `grill-me`, `grilling`
+- `personal`: `backend`, `build`, `designer`, `frontend`, `onboarding`
+- `work`: empty until work-safe reusable content is added
 
-Only the populated `skills` feature is enabled initially. The canonical directories for rules, subagents, hooks, MCP, and permissions are ready; enable each feature in `rulesync.jsonc` after adding and validating real content.
+The profile and the target are independent. Today `personal` can be installed into Codex and `work` into Claude; tomorrow those targets can be swapped without moving or renaming any content folder.
 
-## Commands
+## Synchronize desktop skills
+
+Preview is the default and does not write anything:
 
 ```sh
-pnpm install --frozen-lockfile
-pnpm desktop:preview
-pnpm desktop:apply
-pnpm desktop:check
-pnpm claude:preview
-pnpm claude:apply
-pnpm claude:check
+pnpm sync --profile personal --target codex
+pnpm sync --profile work --target claude
 ```
 
-The `desktop:*` commands update both desktop agents. The `claude:*` and `codex:*` commands update one agent only. Always review the matching `*:preview` command before applying a change.
+Apply and verify:
 
-At present, only skills are enabled. Rules, subagents, hooks, MCP, and permissions remain empty until each shared policy has a real implementation and a verified adapter for both hosts. Provider-specific behavior belongs in an adapter, not in the portable core.
+```sh
+pnpm sync --profile personal --target codex --apply
+pnpm sync --profile personal --target codex --check
 
-## Scope
+pnpm sync --profile work --target claude --apply
+pnpm sync --profile work --target claude --check
+```
 
-- Keep only reusable personal conventions and workflows here.
-- Keep employer-specific skills, project context, code style, and secrets in the relevant work repository as a project-local overlay.
-- Put provider-specific fields in the matching Rulesync target block instead of forking the whole skill.
-- Never commit credentials, OAuth tokens, private work data, or local `rulesync.local.jsonc` overrides.
+To use the work profile in Codex later, only the command changes:
 
-Models such as DeepSeek are reusable through the host agent that runs them. Add the host target (for example OpenCode or Cline), not a model-name directory.
+```sh
+pnpm sync --profile work --target codex --apply
+```
+
+You can also ask either desktop agent:
+
+> In `/Users/berserk/Work/agent-config`, preview and apply the `work` profile to the `claude` target, then run the matching check.
+
+The target names exist only in the adapter command because each desktop app has a different native discovery path:
+
+- Codex: `~/.agents/skills`
+- Claude Code: `~/.claude/skills`
+
+The synchronizer never overwrites an unrelated file or directory. It only removes links previously recorded as managed in `~/.config/agent-config/state.json`.
+
+[OpenAI documents the Codex skill discovery paths](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills). [Anthropic documents that Claude Code Desktop shares the same local configuration and skills](https://code.claude.com/docs/en/desktop#shared-configuration).
+
+## Boundaries
+
+Only skills are synchronized now because they are the only populated artifact type. Instructions, hooks, subagents, and settings remain canonical placeholders until each has a real portable format plus a tested adapter for the target host.
+
+Keep secrets, credentials, employer-private data, and project-specific rules out of this repository. Those belong in the relevant private work repository as a local overlay.

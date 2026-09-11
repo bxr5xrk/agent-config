@@ -1,0 +1,4 @@
+interface:
+  display_name: "Backend"
+  short_description: "Build reliable APIs and data workflows"
+  default_prompt: "Use $backend to implement this server change and verify its contracts."
