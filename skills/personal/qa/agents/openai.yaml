@@ -1,0 +1,4 @@
+interface:
+  display_name: "QA"
+  short_description: "Verify real behavior, failures, and release evidence"
+  default_prompt: "Use $qa to build a risk-based acceptance map and verify this change at the meaningful runtime boundaries."

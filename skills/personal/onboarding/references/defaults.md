@@ -8,7 +8,7 @@ Version 1; reviewed 2026-09-04. Language and database were explicitly chosen by 
 | Runtime/tooling | Supported Node LTS; pnpm workspace; committed lockfile | Existing project's runtime wins |
 | Frontend | Next.js App Router + React | Static-only: static rendering/export if its limitations fit; don't add server work unnecessarily |
 | Styles/components | Tailwind CSS + shadcn/ui, Radix-backed primitives when available | Existing design system wins; inspect current registry variants |
-| Visual identity | Selected separately for each product, 6 initial directions | User may request 5–10 or provide approved artwork |
+| Visual identity | `lightweight_site`: one coherent default; `product_brand`: 6 initial directions | User may request 5–10 or provide approved artwork |
 | API | Separate Fastify service when backend is needed | Tiny synchronous server needs may live in Next Route Handlers/Server Actions |
 | Data | MongoDB, official driver — database user-approved | Mongoose for an existing model layer; relational constraints may justify PostgreSQL |
 | Validation | Zod at external boundaries; native JSON Schema for Fastify routes | Keep schemas consistent; add generation only when duplication is real |

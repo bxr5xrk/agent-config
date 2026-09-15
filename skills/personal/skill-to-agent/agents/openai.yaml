@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill to Agent"
+  short_description: "Turn a skill into a persistent Codex agent"
+  default_prompt: "Use $skill-to-agent to create a persistent Codex agent from an existing skill."

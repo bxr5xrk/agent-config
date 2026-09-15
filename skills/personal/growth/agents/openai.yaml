@@ -1,0 +1,4 @@
+interface:
+  display_name: "Growth"
+  short_description: "Build measurable B2B acquisition and revenue loops"
+  default_prompt: "Use $growth to identify the current growth constraint and design an evidence-led experiment."

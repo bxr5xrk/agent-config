@@ -1,10 +1,10 @@
 # Visual exploration contract
 
-Do this before the final UI kit or feature implementation. First identify the core task and comparable content. Research supplied links first, then original product sites, Curated/Lapa for marketing and Mobbin for task flows. Verify actual pages; a search thumbnail is not a full UX review. Use X/community posts for discovery, not evidence that a design technique works better.
+For `product_brand`, do this after the brand foundation is approved and before the final UI kit or feature implementation. Skip the multi-option contract for `lightweight_site` unless the user explicitly requests alternatives. First identify the core task and comparable content. Research supplied links first, then original product sites, Curated/Lapa for marketing and Mobbin for task flows. Verify actual pages; a search thumbnail is not a full UX review. Use X/community posts for discovery, not evidence that a design technique works better.
 
 Default **6** options; honor any requested count in **5–10**. Give stable IDs A–F. Each must visibly differ on at least three substantive axes: composition, information hierarchy, navigation pattern, typography, image treatment, density, motion or brand expression. Color swaps do not qualify. Keep the same product, core task, content and desktop viewport across options; show mobile treatment for all options or at least the shortlisted pair before selection.
 
-Each option contains:
+Each option applies the same approved name, positioning and core promise, and contains:
 
 - Actual rendered visual: image-generated mockup, browser-rendered lightweight prototype, or an inspected reference screenshot with an honest label.
 - Main screen + key interaction/state; real product vocabulary, plausible data clearly marked as sample.

@@ -1,0 +1,4 @@
+name = "advisor-agent"
+description = "Independent final reviewer for substantive work and response scope."
+sandbox_mode = "read-only"
+developer_instructions = "Before reviewing, read and follow /Users/berserk/Work/agent-config/agents/advisor-agent/AGENTS.md."

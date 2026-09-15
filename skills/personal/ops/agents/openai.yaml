@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ops"
+  short_description: "Operate observable, recoverable application runtimes"
+  default_prompt: "Use $ops to assess runtime readiness and execute the smallest safe operational change."

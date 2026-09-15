@@ -1,5 +1,8 @@
 # Product brief
 
+## Onboarding track
+`lightweight_site` or `product_brand`, with the concrete routing reason and any later reclassification.
+
 ## User and outcome
 Describe the intended user, current problem and measurable first value.
 

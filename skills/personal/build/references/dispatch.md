@@ -8,12 +8,24 @@
 | Small UI revision | designer or frontend | Existing direction decides | Focused visual/behavior review |
 | Public landing/content | designer + frontend | motion, SEO/analytics references | verify-product + simplify |
 | Product/admin flow | frontend | designer, backend | verify-product + simplify |
-| API/data/background work | backend | security-review as relevant | simplify + behavior/contract verification |
+| API/data/background work | backend | security as relevant | simplify + behavior/contract verification |
+| Substantive market or technical evidence | research | Relevant domain owner | Claim and provenance audit |
+| Acquisition, activation or revenue experiment | growth | research, frontend/backend for instrumentation | Metric path + decision gate |
+| Security-sensitive design or change | security | implementation owner | Authorized negative-path evidence |
+| Independent behavior or release verification | qa | Relevant implementation owner for repairs | Acceptance map + scoped release evidence |
+| Deploy, migration, runtime or incident | ops | backend, security or qa as risk requires | Observable runtime + rollback state |
 | Native app surface | Available platform-specific skill | designer for shared intent; native interaction conventions | verify-product + platform build/runtime checks |
-| Auth, tenant or external-input change | implementation owner | security-review | Negative-path evidence |
+| Auth, tenant or external-input change | implementation owner | security | Negative-path evidence |
 | Repeated correction | learn | Original specialist for evidence | Unseen scenario + counterexample, then user batch |
 
 Separate decisions from parallel editing. A designer may establish a direction while backend work proceeds independently. Frontend implementation of that direction waits for the decision it needs. If two agents need the same file, assign one writer and let the other return a patch or review. Shared checkout requires explicit ownership; do not create Git worktrees for this local workflow.
+
+Do not dispatch every specialist for every build. Use the smallest team whose
+boundaries match the actual risk: research establishes consequential unknowns,
+growth owns commercial experiments, security owns scoped trust-boundary work, QA
+independently verifies behavior, and ops owns runtime mutation and recovery.
+The internal `security-review` role may still provide a fresh post-implementation
+review; it does not replace the security specialist for substantive security work.
 
 Every delegation supplies:
 

@@ -3,7 +3,8 @@
 Resolve names/paths against the current active catalog, not remembered plugin-cache versions. Read the selected skill when using it. Do not pretend an absent tool exists.
 
 - Discovery: `grilling` (required requested behavior; local fallback in discovery.md).
-- Visual alternatives: `product-design:ideate` if available; `imagegen` for raster options; own design-exploration contract still governs count and selection.
+- Brand foundation for `product_brand` only: `brand-context` for the shared record, then only the applicable stage specialist among `competitor-branding`, `brand-positioning`, `brand-naming`, `brand-identity` and `brand-guidelines`. Onboarding's question order, live research, naming checks and approval gates remain authoritative.
+- Visual alternatives for `product_brand` or an explicit lightweight-site request: `product-design:ideate` if available; `imagegen` for raster options; own design-exploration contract still governs count and selection.
 - Selected reference implementation: `product-design:image-to-code` when relevant.
 - Existing flow critique: `product-design:audit` only when an audit is useful.
 - Next-specific uncertain behavior: `vercel:nextjs`, caching references for the installed version.

@@ -18,6 +18,28 @@ def validate_state(state, profile):
     if state.get("brief_agreed") is not True:
         raise ValueError("Agree the product brief before generating the project")
     if "web" in PROFILES[profile]:
+        track = state.get("onboarding_track")
+        if track is not None:
+            if not isinstance(track, dict):
+                raise ValueError("Expected an onboarding track object")
+            if track.get("value") not in {"lightweight_site", "product_brand"}:
+                raise ValueError("Choose the lightweight_site or product_brand onboarding track")
+            if not isinstance(track.get("reason"), str) or not track["reason"].strip():
+                raise ValueError("Record the onboarding track reason")
+            if track.get("value") == "lightweight_site":
+                return
+        brand = state.get("brand")
+        if brand is not None:
+            if not isinstance(brand, dict):
+                raise ValueError("Expected a brand decision object")
+            if brand.get("status") in {"approved", "existing_brand"}:
+                if not isinstance(brand.get("approved_name"), str) or not brand["approved_name"].strip():
+                    raise ValueError("Record the approved product or brand name")
+            elif brand.get("status") in {"not_applicable", "user_override"}:
+                if not isinstance(brand.get("override_reason"), str) or not brand["override_reason"].strip():
+                    raise ValueError("Record why the brand stage was not completed")
+            else:
+                raise ValueError("Approve the brand foundation before frontend design")
         design = state.get("design", {})
         if not isinstance(design, dict):
             raise ValueError("Expected a design decision object")
@@ -64,16 +86,20 @@ def scaffold(destination, name, profile, state, source_documents=None):
     (destination / ".node-version").write_text("24\n")
     docs = destination / "docs/onboarding"
     docs.mkdir(parents=True)
+    onboarding_track = state.get("onboarding_track", {}).get("value")
     for source in (SKILL / "assets/documents").glob("*.md"):
+        if onboarding_track == "lightweight_site" and source.name == "BRAND.md":
+            continue
         agreed = Path(source_documents) / source.name if source_documents else None
         shutil.copyfile(agreed if agreed and agreed.is_file() else source, docs / source.name)
     new_state = {**state, "phase": "scaffold", "next_action": "Apply agreed design and implement the first real journey"}
     (docs / "state.json").write_text(json.dumps(new_state, ensure_ascii=False, indent=2) + "\n")
+    source_documents_label = "BRIEF.md/DESIGN.md" if onboarding_track == "lightweight_site" else "BRIEF.md/BRAND.md/DESIGN.md"
     (docs / "STARTER.md").write_text(
         "# Technical starter\n\nRun `pnpm install --frozen-lockfile`, then `pnpm verify`. Start with `pnpm dev`.\n\n"
         "Fullstack: set API_ORIGIN=http://127.0.0.1:3001 for the web process to exercise the status connection.\n\n"
         "Neutral tokens and sample endpoints are technical examples, not the chosen design or business logic. "
-        "Replace them from BRIEF.md/DESIGN.md. Public SEO, Mongo domain data, auth and live analytics "
+        f"Replace them from {source_documents_label}. Public SEO, Mongo domain data, auth and live analytics "
         "are not implemented by this generator. Add only the required modules and verify them.\n"
     )
     return destination

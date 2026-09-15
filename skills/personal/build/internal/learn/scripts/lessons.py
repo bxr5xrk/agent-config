@@ -251,7 +251,11 @@ def rollback(root, version, approval_reference):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--store", type=Path, default=Path(__file__).resolve().parents[5] / "knowledge" / "specialists")
+    parser.add_argument(
+        "--store",
+        type=Path,
+        default=Path.home() / ".agents" / "knowledge" / "specialists",
+    )
     commands = parser.add_subparsers(dest="command", required=True)
     for command in ("propose", "revise"):
         commands.add_parser(command).add_argument("--candidate", type=Path, required=True)

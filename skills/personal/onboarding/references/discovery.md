@@ -2,6 +2,8 @@
 
 Interview in dependency order, not as a long form. Never ask every item automatically. Resolve facts from provided files/code; ask only decisions that materially change the result. Each question includes a recommendation and why it fits. Use one short UI question with 2–3 choices plus free-form input where supported, then wait.
 
+First classify the work using [project track](project-track.md). Clear small-site and SaaS/B2B/product language should route without a question. This choice determines how much of the remaining interview is relevant.
+
 Branches to explore as relevant:
 
 - Person and job: who uses it, what happens today, what meaningful result changes?
@@ -11,7 +13,7 @@ Branches to explore as relevant:
 - Domain: entities, ownership, lifecycle, invariants, money/time semantics, search/filter needs.
 - Access: actors, roles, tenant boundaries, anonymous capabilities, account recovery.
 - Integrations: existing accounts, API limits, authorization ownership, webhooks, background work.
-- Design: supplied references and anti-references, content density, devices, audience expectations, brand assets. Ask for a missing reference only if necessary; research otherwise.
+- Design: for `product_brand`, supplied references and anti-references, content density, devices, audience expectations and brand assets. For `lightweight_site`, ask only what can materially change the single default direction.
 - Operations: public/private launch, data region, hosting constraints, budget where spending is involved, failure consequences.
 
 Record accepted answers immediately. Defaults supply Next, TS, Mongo, Fastify and PostHog without another questionnaire. If the user delegates a decision, make it and record `delegated_default`, not `user_approved`.

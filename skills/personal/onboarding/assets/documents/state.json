@@ -3,6 +3,10 @@
   "phase": "discovery",
   "profile": "fullstack",
   "brief_agreed": false,
+  "onboarding_track": {
+    "value": "pending",
+    "reason": null
+  },
   "decisions": {
     "language": {
       "value": "typescript-strict",
@@ -28,6 +32,11 @@
       "value": "posthog-when-applicable",
       "status": "delegated_default"
     }
+  },
+  "brand": {
+    "status": "pending",
+    "approved_name": null,
+    "override_reason": null
   },
   "design": {
     "status": "pending",

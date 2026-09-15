@@ -1,0 +1,4 @@
+interface:
+  display_name: "Security"
+  short_description: "Review trust boundaries and enforce security properties"
+  default_prompt: "Use $security to threat-model this change and verify the highest-risk security properties."
