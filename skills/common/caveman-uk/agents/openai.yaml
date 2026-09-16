@@ -1,0 +1,5 @@
+interface:
+  display_name: "Caveman concise replies"
+  short_description: "Maximum brevity without loss of meaning"
+policy:
+  allow_implicit_invocation: true

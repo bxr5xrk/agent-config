@@ -4,7 +4,7 @@ Read applicable project instructions first, then the smallest set of canonical d
 
 For a genuinely new project, read [adopted defaults](defaults.md) before proposing the stack. Keep the original request and its language in the handoff; scoped worker instructions may select relevant parts but must retain the requested outcome, exclusions and authorization. A diagnosis-only request stays read-only; an implementation request authorizes its scoped edits and verification. Continue an authorized next step without asking the user to repeat the task.
 
-For direct specialist invocation, follow the [model dispatch policy](runtime.md). If the caller cannot be verified as running the strongest available model, delegate the bounded specialist execution explicitly to that model and wait. A worker already dispatched as that specialist executes directly; it does not recursively delegate itself.
+For direct specialist invocation, follow the [model dispatch policy](runtime.md). The specialist uses the caller's resolved model and reasoning effort. Do not delegate solely to change models; delegate only when the task itself warrants a separate agent.
 
 `python3 scripts/context.py inspect /absolute/project` from the build skill reports root design/brief candidates without reading secrets. `init` creates a missing `design.md` only; it never fabricates an agreed brief or overwrites an existing design document. For a project without a visual surface use `--surface api` and explicitly record design as not applicable. The project's brief may keep its existing filename.
 

@@ -9,7 +9,7 @@ workflows.
 AGENTS.md      global Codex instructions and orchestration policy
 hooks/         active prompt hook configuration and implementation
 skills/
-  common/       brainstorm, grill-me, grilling
+  common/       brainstorm, caveman-uk, diagram-design, grill-me, grilling
   personal/     backend, build, designer, frontend, growth, onboarding, ops,
                 qa, research, security, skill-to-agent
 agents/
@@ -41,13 +41,25 @@ their native locations:
 
 ```sh
 cd /Users/berserk/Work/agent-config
-mkdir -p ~/.codex/hooks ~/.codex/agents
+mkdir -p ~/.codex/hooks ~/.codex/agents ~/.agents/skills
 cp AGENTS.md ~/.codex/AGENTS.md
+ln -sfn /Users/berserk/Work/agent-config/skills/common/caveman-uk \
+  ~/.agents/skills/caveman-uk
+ln -sfn /Users/berserk/Work/agent-config/skills/common/diagram-design \
+  ~/.agents/skills/diagram-design
 cp hooks/hooks.json ~/.codex/hooks.json
 cp hooks/task_contract.py ~/.codex/hooks/task_contract.py
 ln -f /Users/berserk/Work/agent-config/agents/advisor-agent/config.toml \
   ~/.codex/agents/advisor-agent.toml
 ```
+
+The `AGENTS.md` rule applies the single permanent `caveman-uk` style to every
+user-facing chat reply. The skill remains canonical in this repository;
+`~/.agents/skills/caveman-uk` is a symbolic link that exposes it to Codex for
+implicit invocation. There are no modes or manual activation commands.
+
+Use `$diagram-design` for complex explanatory or presentation-quality diagrams.
+Use built-in diagramming for simple diagrams with only a few blocks.
 
 ## Codex agents
 
@@ -57,6 +69,13 @@ use a hard link so the repository remains the single source of truth; ordinary
 symbolic links for custom-agent TOML files were not discovered in verification.
 Recreate the hard link after a Git operation or editor replaces the canonical
 file's inode.
+
+Every custom-agent `config.toml` intentionally omits `model` and
+`model_reasoning_effort`, so a spawned agent inherits both from its parent.
+New root or standalone runs, including scheduled tasks, use `gpt-5.6-sol` with
+`high` reasoning unless the user explicitly chooses another model or effort.
+Apply that root-run default in the native Codex configuration or automation;
+do not add it to child-agent TOML files.
 
 ```sh
 ln -f /Users/berserk/Work/agent-config/agents/design-agent/config.toml \

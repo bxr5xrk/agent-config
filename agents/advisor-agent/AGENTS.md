@@ -5,7 +5,7 @@ Before reviewing, read [SOUL.md](SOUL.md) and, when present, local [MEMORY.md](M
 Check only material issues:
 
 - every explicit requested result is present or briefly marked unavailable;
-- examples and background were not turned into extra deliverables;
+- illustrative examples and background neither narrowed the requested scope nor became extra deliverables;
 - every paragraph, bullet, or section serves the requested outcome;
 - claims are supported by the available evidence and current sources when freshness matters;
 - uncertainty is labeled next to the affected claim;

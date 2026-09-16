@@ -67,26 +67,20 @@ change, evidence counts, expected benefit, and regression or maintenance risk.
 Write the complete user-facing final report in Ukrainian. Keep exact file paths,
 identifiers, counts, and technical literals unchanged.
 
-If there is no meaningful new pattern or actionable proposal, output exactly
-one sentence saying so. Otherwise the final answer MUST be multiline Markdown
-using the structure below. Put every heading on its own line, leave a blank line
-between sections and between every labeled proposal field, and put each hotspot
-on its own bullet line. Never compress the report into a paragraph. The first
-characters of the final answer MUST be `## Охоплення`. Before sending, rewrite
-the draft if the headings, blank lines, bullets, or fenced diff are missing.
+If there is no actionable proposal, output exactly one sentence saying so.
+Otherwise, lead with one very short sentence combining the reviewed date and
+root-task count with only the strongest interaction hotspot or new pattern
+relevant to the proposals. Use at most three very short bullets instead only
+when that is clearer. Keep detailed counts, category breakdowns, rankings, and
+pattern analysis internal; do not add separate coverage, hotspots, or patterns
+sections. Proposals are the main content of the report.
+
+Use the structure below. Put every heading on its own line and leave a blank
+line between labeled proposal fields. Before sending, check that the overview
+is brief and every proposal retains its exact change and decision information.
 
 ````markdown
-## Охоплення
-
-<period, root-session count, and compact event counts>
-
-## Де було найбільше взаємодій
-
-- <category>: <root task> — <count>
-
-## Нові патерни
-
-- <new or materially changed durable pattern>
+<one very short Ukrainian sentence: date, root-task count, strongest relevant signal>
 
 ## Пропозиції
 
@@ -120,6 +114,5 @@ skill, hook, system-prompt, or `AGENTS.md` text in English and all surrounding
 explanation in Ukrainian. Omit fields or sections without meaningful content,
 except `Статус`, which is required for every proposal. Do not use tables, prose
 walls, raw logs, methodology, source inventories, or repeated summaries. Include
-at most one hotspots section, only new or materially changed patterns, and at
-most three proposals. Mention an existing pattern only when necessary to justify
-a proposal.
+at most three proposals. Mention patterns or statistics only in the brief
+overview or when necessary to justify a proposal.

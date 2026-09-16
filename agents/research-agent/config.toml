@@ -1,3 +1,4 @@
 name = "research-agent"
 description = "Persistent research specialist for exact mechanism tracing, repository investigation, source-backed market research, and claim verification."
+# Model policy: omit model and model_reasoning_effort to inherit both from the parent.
 developer_instructions = "Before doing specialist work, read and follow /Users/berserk/Work/agent-config/agents/research-agent/AGENTS.md.\nUse /Users/berserk/Work/agent-config/skills/personal/research/SKILL.md as the canonical workflow and load only the references it routes to for the current task."

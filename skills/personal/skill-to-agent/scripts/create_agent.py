@@ -20,6 +20,9 @@ REQUIRED_PROFILE_FILES = (
     "MEMORY.md",
     "memory/CANDIDATES.md",
 )
+INHERITANCE_COMMENT = (
+    "# Model policy: omit model and model_reasoning_effort to inherit both from the parent."
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -130,6 +133,7 @@ def generated_config(agent_name: str, description: str, target: Path, skill_path
     return (
         f"name = {json.dumps(agent_name)}\n"
         f"description = {json.dumps(description)}\n"
+        f"{INHERITANCE_COMMENT}\n"
         f"developer_instructions = {json.dumps(instruction)}\n"
     )
 
@@ -158,6 +162,11 @@ def validate_profile(target: Path, skill_path: Path) -> None:
             raise ValueError(f"config.toml is missing {key}")
     if str(skill_path) not in config["developer_instructions"]:
         raise ValueError("config.toml does not reference the source skill")
+    for key in ("model", "model_reasoning_effort"):
+        if key in config:
+            raise ValueError(f"config.toml must omit {key} so the agent inherits from its parent")
+    if INHERITANCE_COMMENT not in (target / "config.toml").read_text(encoding="utf-8"):
+        raise ValueError("config.toml does not document parent model inheritance")
 
 
 def main() -> int:

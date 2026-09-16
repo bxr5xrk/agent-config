@@ -33,6 +33,13 @@ installation root is `~/.codex/agents/`. Use `--update` to refresh generated
 `memory/CANDIDATES.md`. The command refuses to replace a different installed
 file unless `--replace-install` is explicit.
 
+Generated child-agent configs intentionally omit `model` and
+`model_reasoning_effort`, so every spawned agent inherits both from its parent.
+Do not put the root-run default in a child-agent config. New root or standalone
+runs, including scheduled tasks, use `gpt-5.6-sol` with `high` reasoning unless
+the user explicitly chooses another model or effort; configure that at the
+native root task or automation boundary.
+
 After a first scaffold, tailor `SOUL.md` to stable role judgment and tone. Keep
 `MEMORY.md` and `memory/CANDIDATES.md` local and out of Git. Apply feedback to
 the current task, but persist at most one concise item only when it meets the

@@ -1,6 +1,8 @@
 node_modules/
 __pycache__/
 *.pyc
+.DS_Store
+.playwright-cli/
 **/MEMORY.md
 **/CANDIDATES.md
 agents/*/memory/

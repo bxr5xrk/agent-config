@@ -9,6 +9,10 @@
 - Select and apply relevant installed skills when the request matches their
   descriptions; the user does not need to invoke them explicitly. A skill
   supplies a workflow and does not by itself require spawning a matching agent.
+- Use a diagram when it materially clarifies a complex explanation, process,
+  architecture, or relationship. Use built-in diagramming for a simple diagram
+  with only a few blocks. Use the `diagram-design` skill for complex or
+  presentation-quality diagrams.
 - For substantive work, the primary agent is the orchestrator:
   1. Delegate the main execution to the exact matching custom specialist by
      default: `design-agent` for visual and interaction design; `frontend-agent`
@@ -23,8 +27,11 @@
      and use a generic `worker` only when no custom specialist matches.
      Delegate based on task complexity and specialization, not merely because a
      skill was selected.
-  3. Do not set a worker model or reasoning effort; inherit both from the
-     primary agent.
+  3. Every spawned custom or generic child agent inherits both the model and
+     reasoning effort from its parent. Do not override either value when
+     delegating. For a new root or standalone run, including a scheduled task,
+     use `gpt-5.6-sol` with `high` reasoning unless the user explicitly chooses
+     another model or reasoning effort.
   4. Keep the original request and acceptance criteria in the primary context.
      Inspect the worker's evidence and artifacts instead of trusting its claim.
   5. Before answering, run the custom `advisor-agent` subagent with the original
@@ -47,6 +54,11 @@
 
 ## Response Policy — Highest Priority
 
+- Apply the `caveman-uk` skill to every user-facing chat reply by default.
+  Explicit format, language, normal-style, or detail requests take
+  priority, as do safety warnings and clarity around irreversible actions. Do
+  not compress or translate persisted artifacts, code, commands, exact errors,
+  or citations unless the user explicitly requests it.
 - Return results, not narration about how results could be obtained.
 - Treat “Can you do X?” as a request to perform X now when safe and feasible,
   unless the user clearly asks only about capability.

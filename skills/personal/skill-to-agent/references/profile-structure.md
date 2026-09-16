@@ -9,6 +9,15 @@ The agent is a thin stateful wrapper around a reusable skill:
 - `memory/CANDIDATES.md`: local pending guidance; never commit it.
 - source `SKILL.md`: reusable method, routing, and domain procedure.
 
+## Model policy
+
+`config.toml` intentionally omits `model` and `model_reasoning_effort`. A
+spawned custom agent inherits both values from its parent. Root or standalone
+runs, including scheduled tasks, use `gpt-5.6-sol` with `high` reasoning unless
+the user explicitly chooses another model or effort; that default belongs in
+the native root task or automation configuration, never in the child-agent
+profile.
+
 Use this precedence:
 
 1. Current user request and authorization boundaries.
