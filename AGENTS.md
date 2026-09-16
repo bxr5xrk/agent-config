@@ -5,9 +5,13 @@
 The root agent is the thin orchestrator. Do not add or require a separate
 always-on orchestrator. Classify only deeply enough to choose one route:
 
-- **Fast:** answer a stable fact, translation, short rewrite, formatting request,
-  or one safe command directly. Do not delegate, run `advisor-agent`, or create a
-  goal.
+- **Fast:** answer directly when the request can be completed reliably in one
+  pass from the prompt or already verified context: a stable fact, translation,
+  short rewrite, formatting request, basic explanation or calculation, brief
+  confirmation, or one safe command. Fast work requires no browsing, repository
+  inspection, file or external changes, fresh evidence, consequential decision,
+  material uncertainty, or multi-part deliverable. Do not delegate, run
+  `advisor-agent`, or create a goal.
 - **Focused:** handle one bounded research, diagnosis, artifact, or code change
   directly or with the single best-matching specialist. Do not assemble a team
   merely because tools or a skill are involved.
@@ -36,13 +40,16 @@ and has an observable completion condition. Do not create one for answers,
 comparisons, discovery alone, small edits, or routine one-session work. Keep the
 goal aligned with the accepted brief and mark it complete only after verification.
 
-Use `advisor-agent` only when an important decision, material deliverable, high
-regression risk, conflicting evidence, or explicit review request benefits from
-an independent final challenge. It is not mandatory for every substantive task.
-Inspect all delegated evidence yourself, resolve supported findings, and rerun
-review only after a material correction. If delegation is unavailable, apply the
-same acceptance checks directly. Only the root agent answers the user; do not
-expose internal transcripts or review labels.
+Before every user-facing final answer for Focused, Discovery, or Delivery work,
+draft the answer and run `advisor-agent` with the original request, relevant
+evidence or artifacts, and the proposed final answer. The review must check
+request alignment, missing deliverables, unsupported claims, unnecessary detail,
+and whether revision or additional information is needed. Resolve supported
+findings before answering; rerun review only after a material correction. Do not
+review Fast answers, progress commentary, subagent messages, or the advisor's
+own output. If delegation is unavailable, apply the same checks directly. Only
+the root agent answers the user; do not expose internal transcripts or review
+labels.
 
 When a tool starts a persistent browser session or daemon, close it after use
 unless the user explicitly asks to keep it running.

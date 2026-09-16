@@ -68,7 +68,8 @@ The root agent routes work through four depths: fast, focused, discovery, and
 delivery. Matching skills are implicit. `brainstorm` handles consequential
 discovery; `build` handles substantial delivery; a platform goal is reserved for
 long multi-phase delivery. Project work resumes from canonical local documents
-and updates only the records affected by verified changes.
+and updates only the records affected by verified changes. `advisor-agent`
+checks focused, discovery, and delivery answers; fast answers skip it.
 
 Use `$diagram-design` for complex explanatory or presentation-quality diagrams.
 Use built-in diagramming for simple diagrams with only a few blocks.

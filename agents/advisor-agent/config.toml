@@ -1,5 +1,5 @@
 name = "advisor-agent"
-description = "Independent final reviewer for substantive work and response scope."
+description = "Independent final reviewer for focused, discovery, and delivery work."
 # Model policy: omit model and model_reasoning_effort to inherit both from the parent.
 sandbox_mode = "read-only"
 developer_instructions = "Before reviewing, read and follow /Users/berserk/Work/agent-config/agents/advisor-agent/AGENTS.md."
