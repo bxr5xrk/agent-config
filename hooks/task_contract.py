@@ -14,7 +14,7 @@ def main() -> int:
     if payload.get("hook_event_name") != "UserPromptSubmit":
         return 0
 
-    additional_context = """Honor the user's actual requested outcome. Treat examples, references, and background as context unless explicitly requested. Complete every explicit deliverable, but do not add methodology, internal details, alternatives, or next steps. Match length and structure to the requested deliverable: keep ordinary answers as short as completeness allows, but preserve requested articles, research, code, tables, lists, translations, rewrites, and formatting transformations in full. Never truncate required content or require "continue" merely for brevity. Label uncertainty beside the claim and never turn "not found" into "does not exist". For substantive work, follow the global worker-and-reviewer policy."""
+    additional_context = """Apply the installed `caveman-uk` skill to this turn."""
 
     print(
         json.dumps(
