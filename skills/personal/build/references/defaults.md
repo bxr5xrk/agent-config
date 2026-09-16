@@ -1,6 +1,6 @@
 # Adopted defaults for new projects
 
-These choices carry forward the user's onboarding setup, reviewed 2026-09-04. TypeScript and MongoDB were explicitly approved; the remaining stack choices were adopted under delegated setup. Apply them to genuinely new projects without repeating the stack questionnaire. Current project instructions, an existing stack and later explicit user decisions take precedence.
+These choices carry forward the user's project setup, reviewed 2026-09-04. TypeScript and MongoDB were explicitly approved; the remaining stack choices were adopted under delegated setup. Apply them to genuinely new projects without repeating the stack questionnaire. Current project instructions, an existing stack and later explicit user decisions take precedence.
 
 | Need | Default and boundary |
 |---|---|

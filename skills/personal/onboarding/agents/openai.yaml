@@ -1,4 +1,0 @@
-interface:
-  display_name: "Onboarding"
-  short_description: "Route an idea to the right onboarding depth"
-  default_prompt: "Use $onboarding to classify my project, apply only the necessary brand and design depth, and build the agreed scaffold."

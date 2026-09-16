@@ -1,49 +1,67 @@
 # Global Rules
 
-## Default Orchestration
+## Task Routing
 
-- Answer simple requests directly without subagents. Simple requests include a
-  single stable fact, translation, short rewrite, formatting, or one command.
-- Treat research, multi-source comparison, implementation, file changes,
-  tool-based diagnosis, and important decisions or artifacts as substantive.
-- Select and apply relevant installed skills when the request matches their
-  descriptions; the user does not need to invoke them explicitly. A skill
-  supplies a workflow and does not by itself require spawning a matching agent.
-- Use a diagram when it materially clarifies a complex explanation, process,
-  architecture, or relationship. Use built-in diagramming for a simple diagram
-  with only a few blocks. Use the `diagram-design` skill for complex or
-  presentation-quality diagrams.
-- For substantive work, the primary agent is the orchestrator:
-  1. Delegate the main execution to the exact matching custom specialist by
-     default: `design-agent` for visual and interaction design; `frontend-agent`
-     for web UI and client behavior; `backend-agent` for APIs, domain logic,
-     data, and integrations; `research-agent` for repository, product, market,
-     or mechanism research; `growth-agent` for acquisition, activation,
-     retention, and revenue; `security-agent` for threats, authorization,
-     secrets, and security review; `qa-agent` for independent verification and
-     release evidence; and `ops-agent` for environments, deployments, runtime,
-     observability, and incident recovery.
-  2. Choose one primary owner. Add agents only for genuinely independent needs,
-     and use a generic `worker` only when no custom specialist matches.
-     Delegate based on task complexity and specialization, not merely because a
-     skill was selected.
-  3. Every spawned custom or generic child agent inherits both the model and
-     reasoning effort from its parent. Do not override either value when
-     delegating. For a new root or standalone run, including a scheduled task,
-     use `gpt-5.6-sol` with `high` reasoning unless the user explicitly chooses
-     another model or reasoning effort.
-  4. Keep the original request and acceptance criteria in the primary context.
-     Inspect the worker's evidence and artifacts instead of trusting its claim.
-  5. Before answering, run the custom `advisor-agent` subagent with the original
-     request, worker result, relevant evidence, and proposed final answer.
-  6. Resolve supported `advisor-agent` findings. Re-run review only when the
-     correction materially changes the result.
-- If delegation is unavailable, complete the work directly and apply the same
-  acceptance and response checks yourself.
-- Only the primary agent answers the user. Do not expose worker or `advisor-agent`
-  transcripts, internal review labels, or process narration.
-- When a tool starts a persistent browser session or daemon, close it after use
-  unless the user explicitly asks to keep it running.
+The root agent is the thin orchestrator. Do not add or require a separate
+always-on orchestrator. Classify only deeply enough to choose one route:
+
+- **Fast:** answer a stable fact, translation, short rewrite, formatting request,
+  or one safe command directly. Do not delegate, run `advisor-agent`, or create a
+  goal.
+- **Focused:** handle one bounded research, diagnosis, artifact, or code change
+  directly or with the single best-matching specialist. Do not assemble a team
+  merely because tools or a skill are involved.
+- **Discovery:** for a new product, material direction, or consequential unknown,
+  apply `brainstorm` implicitly and use `grilling` only for decisions that cannot
+  be discovered or safely delegated. Ask one material question at a time, state
+  the recommendation, and persist accepted decisions before implementation.
+- **Delivery:** for a substantial implementation, new-project setup, or change
+  spanning several surfaces, apply `build` implicitly. Use one primary specialist
+  and add design, frontend, backend, research, growth, security, QA, or ops agents
+  only for distinct owned work or independent checks.
+
+Select matching installed skills automatically; users do not need to name them.
+A skill supplies a workflow and does not itself require a matching subagent.
+Every child inherits the parent model and reasoning effort. New standalone root
+runs use `gpt-5.6-sol` with `high` reasoning unless the user chooses otherwise.
+
+For file visualization, use the native artifact path first: the relevant PDF,
+document, spreadsheet, presentation, image, visualization, or diagram capability.
+Use built-in diagramming for a few simple blocks and `diagram-design` for complex
+or presentation-quality diagrams. Do not route a one-off file visualization to
+`frontend` unless the requested result is an actual web interface.
+
+Create a goal only for authorized delivery that is long-running, multi-phase,
+and has an observable completion condition. Do not create one for answers,
+comparisons, discovery alone, small edits, or routine one-session work. Keep the
+goal aligned with the accepted brief and mark it complete only after verification.
+
+Use `advisor-agent` only when an important decision, material deliverable, high
+regression risk, conflicting evidence, or explicit review request benefits from
+an independent final challenge. It is not mandatory for every substantive task.
+Inspect all delegated evidence yourself, resolve supported findings, and rerun
+review only after a material correction. If delegation is unavailable, apply the
+same acceptance checks directly. Only the root agent answers the user; do not
+expose internal transcripts or review labels.
+
+When a tool starts a persistent browser session or daemon, close it after use
+unless the user explicitly asks to keep it running.
+
+## Project Continuity
+
+- At the start of project work, locate the project root and applicable
+  instructions, then read only the canonical documents relevant to the request:
+  brief/product state, current task, design, architecture/decisions, and handoff
+  or changelog. Verify important claims against the current implementation.
+- Reuse existing document names and locations. Link to authoritative records
+  instead of creating parallel briefs, designs, ADRs, or status files.
+- For a new serious project, discovery establishes the brief and unresolved
+  decisions; delivery creates only the architecture, design, task, and handoff
+  records that the actual scope needs.
+- During material work, keep the active task state current. At handoff, update
+  every canonical document affected by verified behavior, including decisions,
+  known gaps, evidence, and the next action when work remains. Small edits that
+  change no project decision do not need documentation ceremony.
 
 ## Response Policy — Highest Priority
 

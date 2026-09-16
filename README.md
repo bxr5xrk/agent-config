@@ -6,11 +6,11 @@ workflows.
 ## Content
 
 ```text
-AGENTS.md      global Codex instructions and orchestration policy
+AGENTS.md      global instructions and orchestration policy
 hooks/         active prompt hook configuration and implementation
 skills/
   common/       brainstorm, caveman-uk, diagram-design, grill-me, grilling
-  personal/     backend, build, designer, frontend, growth, onboarding, ops,
+  personal/     backend, build, designer, frontend, growth, ops,
                 qa, research, security, skill-to-agent
 agents/
   advisor-agent/ persistent final reviewer profile and Codex agent config
@@ -35,28 +35,40 @@ Keep secrets, credentials, employer-private data, and project-specific rules out
 
 ## Codex configuration
 
-`AGENTS.md`, `hooks/`, and `agents/advisor-agent/config.toml` are the canonical sources for
-the custom global Codex behavior in this repository. Apply them manually to
-their native locations:
+`AGENTS.md`, `hooks/`, and agent `config.toml` files are the canonical sources
+for custom global Codex behavior. Install files as hard links so edits stay
+synchronized with this repository. Skill directories use symbolic links because
+directories cannot be hard-linked:
 
 ```sh
 cd /Users/berserk/Work/agent-config
 mkdir -p ~/.codex/hooks ~/.codex/agents ~/.agents/skills
-cp AGENTS.md ~/.codex/AGENTS.md
+ln -f /Users/berserk/Work/agent-config/AGENTS.md ~/.codex/AGENTS.md
 ln -sfn /Users/berserk/Work/agent-config/skills/common/caveman-uk \
   ~/.agents/skills/caveman-uk
 ln -sfn /Users/berserk/Work/agent-config/skills/common/diagram-design \
   ~/.agents/skills/diagram-design
-cp hooks/hooks.json ~/.codex/hooks.json
-cp hooks/task_contract.py ~/.codex/hooks/task_contract.py
+ln -f /Users/berserk/Work/agent-config/hooks/hooks.json ~/.codex/hooks.json
+ln -f /Users/berserk/Work/agent-config/hooks/task_contract.py \
+  ~/.codex/hooks/task_contract.py
 ln -f /Users/berserk/Work/agent-config/agents/advisor-agent/config.toml \
   ~/.codex/agents/advisor-agent.toml
 ```
 
-The `AGENTS.md` rule applies the single permanent `caveman-uk` style to every
+The global `AGENTS.md` rule applies the single permanent `caveman-uk` style to every
 user-facing chat reply. The skill remains canonical in this repository;
 `~/.agents/skills/caveman-uk` is a symbolic link that exposes it to Codex for
 implicit invocation. There are no modes or manual activation commands.
+
+When Codex runs inside this repository, it discovers the same hard-linked
+`AGENTS.md` once globally and once at project scope. This is the deliberate
+tradeoff for keeping the root file as the single canonical source.
+
+The root agent routes work through four depths: fast, focused, discovery, and
+delivery. Matching skills are implicit. `brainstorm` handles consequential
+discovery; `build` handles substantial delivery; a platform goal is reserved for
+long multi-phase delivery. Project work resumes from canonical local documents
+and updates only the records affected by verified changes.
 
 Use `$diagram-design` for complex explanatory or presentation-quality diagrams.
 Use built-in diagramming for simple diagrams with only a few blocks.
@@ -67,8 +79,9 @@ Keep each agent's canonical files in `agents/<name>/`. Install only its
 `config.toml` into `~/.codex/agents/<name>.toml`. For the current Codex client,
 use a hard link so the repository remains the single source of truth; ordinary
 symbolic links for custom-agent TOML files were not discovered in verification.
-Recreate the hard link after a Git operation or editor replaces the canonical
-file's inode.
+Recreate hard links after a Git operation or editor replaces a canonical file's
+inode. Verify links with `ls -li`: each canonical/installed pair must share an
+inode.
 
 Every custom-agent `config.toml` intentionally omits `model` and
 `model_reasoning_effort`, so a spawned agent inherits both from its parent.

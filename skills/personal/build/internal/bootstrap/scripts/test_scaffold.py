@@ -28,7 +28,7 @@ class ScaffoldTest(unittest.TestCase):
                 original["decisions"] = {"language": "typescript-strict"}
                 result = scaffold(self.root / profile, "sample", profile, original, self.documents)
                 self.assertEqual({p.name for p in (result / "apps").iterdir()}, expected)
-                saved = json.loads((result / "docs/onboarding/state.json").read_text())
+                saved = json.loads((result / "docs/project/state.json").read_text())
                 self.assertEqual(saved["decisions"], original["decisions"])
                 self.assertNotIn("phase", original)
 
@@ -37,7 +37,7 @@ class ScaffoldTest(unittest.TestCase):
         source.mkdir()
         (source / "BRIEF.md").write_text("Agreed product and actual first journey")
         result = scaffold(self.root / "project", "sample", "api", state("api"), source)
-        self.assertEqual((result / "docs/onboarding/BRIEF.md").read_text(), "Agreed product and actual first journey")
+        self.assertEqual((result / "docs/project/BRIEF.md").read_text(), "Agreed product and actual first journey")
 
     def test_missing_or_placeholder_agreed_documents_fail_before_creation(self):
         original_brief = (self.documents / "BRIEF.md").read_text()
@@ -62,41 +62,41 @@ class ScaffoldTest(unittest.TestCase):
         original = state("web", "user_override")
         original["design"]["override_reason"] = "User delegated design selection and waived the board"
         result = scaffold(self.root / "delegated", "sample", "web", original, self.documents)
-        saved = json.loads((result / "docs/onboarding/state.json").read_text())
+        saved = json.loads((result / "docs/project/state.json").read_text())
         self.assertEqual(saved["design"], original["design"])
-        self.assertEqual((result / "docs/onboarding/BRIEF.md").read_text(), (self.documents / "BRIEF.md").read_text())
+        self.assertEqual((result / "docs/project/BRIEF.md").read_text(), (self.documents / "BRIEF.md").read_text())
 
     def test_api_without_visual_scope_records_design_as_not_applicable(self):
         (self.documents / "DESIGN.md").unlink()
         result = scaffold(self.root / "api", "sample", "api", state("api", "not_applicable"), self.documents)
-        design = (result / "docs/onboarding/DESIGN.md").read_text()
+        design = (result / "docs/project/DESIGN.md").read_text()
         self.assertIn("Visual design: not applicable", design)
-        saved = json.loads((result / "docs/onboarding/state.json").read_text())
+        saved = json.loads((result / "docs/project/state.json").read_text())
         self.assertEqual(saved["next_action"], "Implement the first real API journey")
 
         supplied = "API documentation examples use the parent project's approved visual system."
         (self.documents / "DESIGN.md").write_text(supplied)
         other = scaffold(self.root / "api-with-context", "sample", "api", state("api"), self.documents)
-        self.assertEqual((other / "docs/onboarding/DESIGN.md").read_text(), supplied)
+        self.assertEqual((other / "docs/project/DESIGN.md").read_text(), supplied)
 
     def test_landing_review_is_carried_only_when_supplied(self):
         result = scaffold(self.root / "api-scope", "sample", "api", state("api"), self.documents)
-        self.assertFalse((result / "docs/onboarding/LANDING-REVIEW.md").exists())
+        self.assertFalse((result / "docs/project/LANDING-REVIEW.md").exists())
         review = "Selected landing direction A; mobile motion review pending."
         (self.documents / "LANDING-REVIEW.md").write_text(review)
         result = scaffold(self.root / "landing", "sample", "web", state("web"), self.documents)
-        self.assertEqual((result / "docs/onboarding/LANDING-REVIEW.md").read_text(), review)
+        self.assertEqual((result / "docs/project/LANDING-REVIEW.md").read_text(), review)
 
     def test_brand_is_optional_but_supplied_identity_survives(self):
         result = scaffold(self.root / "api-no-brand", "sample", "api", state("api"), self.documents)
-        self.assertFalse((result / "docs/onboarding/BRAND.md").exists())
+        self.assertFalse((result / "docs/project/BRAND.md").exists())
         brand = "Approved display name: Тиха Хвиля. Preserve the supplied mark."
         (self.documents / "BRAND.md").write_text(brand)
         original = state("web")
         original["brand"] = {"display_name": "Тиха Хвиля", "status": "user_approved"}
         result = scaffold(self.root / "branded", "tykha-khvylia", "web", original, self.documents)
-        self.assertEqual((result / "docs/onboarding/BRAND.md").read_text(), brand)
-        saved = json.loads((result / "docs/onboarding/state.json").read_text())
+        self.assertEqual((result / "docs/project/BRAND.md").read_text(), brand)
+        saved = json.loads((result / "docs/project/state.json").read_text())
         self.assertEqual(saved["brand"], original["brand"])
         self.assertEqual(json.loads((result / "package.json").read_text())["name"], "tykha-khvylia")
 

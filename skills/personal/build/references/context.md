@@ -1,6 +1,6 @@
 # One project context, reusable expertise
 
-Read applicable project instructions first, then the smallest set of canonical documents needed for this task. Locate root `design.md` case-insensitively, the brief, architecture/analytics documents and existing onboarding state. Inspect package manifests, component tokens and changed code to verify documents against reality.
+Read applicable project instructions first, then the smallest set of canonical documents needed for this task. Locate root `design.md` case-insensitively, the brief, architecture/analytics documents and existing project state. Inspect package manifests, component tokens and changed code to verify documents against reality.
 
 For a genuinely new project, read [adopted defaults](defaults.md) before proposing the stack. Keep the original request and its language in the handoff; scoped worker instructions may select relevant parts but must retain the requested outcome, exclusions and authorization. A diagnosis-only request stays read-only; an implementation request authorizes its scoped edits and verification. Continue an authorized next step without asking the user to repeat the task.
 
@@ -21,16 +21,16 @@ Newer explicit project decisions can override a global style preference. A stand
 
 Keep project names, brand palettes, tenant logic and provider details in project documents. Only reusable principles and explicitly global preferences belong in specialist knowledge. Do not load every role, every reference, or entire historical chats into a task.
 
-## Minimum state
+## Proportionate state
 
-- `design.md`: project/surface type, approved direction, reference intent, actual token/component paths, implemented state and known gaps, interaction/motion/accessibility contracts and last verification.
-- Brief: accepted outcome, exclusions, decision provenance and acceptance IDs.
-- `.team/task.md`: current scope, ownership, progress, unresolved findings and evidence. Use an existing equivalent if present.
-- Architecture and analytics documents: only when those decisions are relevant; link existing documents instead of copying them.
+- Brief or existing product record: accepted outcome, exclusions, decision provenance and acceptance IDs for substantial product work.
+- `.team/task.md` or an existing equivalent: current scope, ownership, progress, unresolved findings and evidence for active multi-step delivery.
+- `design.md` or the project's established design record: only for a visual surface; include approved direction, actual token/component paths, known gaps and last verification.
+- Architecture, decisions, analytics, changelog and handoff: only when the task affects them; update and link existing documents instead of copying them.
 
 For ambiguous terms or consequential domain/architecture decisions, read [domain context](domain.md). Preserve existing glossary and ADR conventions; ordinary edits do not require creating them.
 
-At handoff update the documents affected by the change. A design proposal remains proposed until selected; a code change remains unverified until the relevant behavior is exercised.
+At handoff update every canonical document affected by the change, not every document in the repository. Record decisions and verified behavior while they are fresh so a new chat can resume without conversation history. A design proposal remains proposed until selected; a code change remains unverified until the relevant behavior is exercised.
 
 For approved global recall run the learning helper with the role, then inspect each returned rule's applicability and exceptions. Empty recall means no approved lesson, not permission to read pending proposals as policy. See [learning](../internal/learn/ROLE.md).
 

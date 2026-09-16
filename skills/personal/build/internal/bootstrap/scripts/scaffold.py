@@ -12,7 +12,7 @@ PROFILES = {"api": ("api",), "web": ("web",), "fullstack": ("api", "web")}
 
 def validate_state(state, profile):
     if not isinstance(state, dict) or state.get("schema_version") != 1:
-        raise ValueError("Expected onboarding state schema_version 1")
+        raise ValueError("Expected project state schema_version 1")
     if state.get("profile") != profile:
         raise ValueError("Requested profile must match the agreed state")
     if state.get("brief_agreed") is not True:
@@ -73,7 +73,7 @@ def scaffold(destination, name, profile, state, source_documents=None):
     (destination / "pnpm-workspace.yaml").write_text("packages:\n  - 'apps/*'\n")
     (destination / ".gitignore").write_text("node_modules/\n.next/\ndist/\n*.tsbuildinfo\n.env\n.env.*\n!.env.example\n")
     (destination / ".node-version").write_text("24\n")
-    docs = destination / "docs/onboarding"
+    docs = destination / "docs/project"
     docs.mkdir(parents=True)
     for source in (SKILL / "assets/documents").glob("*.md"):
         agreed = Path(source_documents) / source.name if source_documents else None

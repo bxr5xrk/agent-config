@@ -3,18 +3,19 @@ name: build
 description: >-
   Implement an agreed brainstorm brief or a substantial project change by
   coordinating design, frontend and backend specialists, integration and
-  independent checks.
+  independent checks. Apply automatically for authorized multi-surface delivery;
+  do not use for small edits or discovery alone.
 ---
 # Build
 
 Start implementation from the agreed brainstorm result or a scoped request for an existing project. Own delegation, integration, internal reviews and fixes using the available Codex subagent tools. The user invokes only this skill, not the internal reviewer or learning roles.
 
-1. Resolve the [project context](references/context.md), requested change and actual authorization. For a new idea with consequential unknowns use `brainstorm`; for a bug use [diagnosis](references/diagnosis.md). For an established project ask only the missing decision. Do not restart onboarding for a section or bug fix.
-2. Map requirements to observable acceptance and choose the relevant [specialists](references/dispatch.md). When a material part depends on narrow or version-sensitive technology not covered by project instructions, apply [expertise routing](references/expertise-routing.md). Let every spawned role inherit the parent model and reasoning effort; do not override either value unless the user explicitly requests it.
-3. Create a compact task record from [the template](assets/task.md). For substantial work use [verifiable slices](references/delivery.md); assign file ownership and dependencies before parallel work. Pass each agent the scoped brief, canonical documents, approved applicable lessons, input artifacts and expected evidence. Delegate independent work and wait for required outputs.
+1. Resolve the [project context](references/context.md), requested change and actual authorization. For a new idea with consequential unknowns use `brainstorm`; for a bug use [diagnosis](references/diagnosis.md). For an established project ask only the missing decision. Do not restart discovery for a section or bug fix.
+2. Map requirements to observable acceptance and choose the relevant [specialists](references/dispatch.md). When a material part depends on narrow or version-sensitive technology not covered by project instructions, apply [expertise routing](references/expertise-routing.md). Let every spawned role inherit the parent model and reasoning effort; do not override either value unless the user explicitly requests it. Create a platform goal only when the authorized delivery is long-running, multi-phase, and has a verifiable finish; otherwise keep the task local.
+3. Create a compact task record from [the template](assets/task.md) only for multi-step work. For substantial work use [verifiable slices](references/delivery.md); assign file ownership and dependencies before parallel work. Pass each agent the scoped brief, canonical documents, approved applicable lessons, input artifacts and expected evidence. Delegate independent work and wait for required outputs.
 4. Integrate the implementation, then run independent `verify-product` and `simplify` reviews for material UI/behavior changes. Add `security-review` when trust boundaries change. Follow [review and repair](references/review-loop.md); inspect artifacts and rerun affected checks after fixes.
-5. Reconcile project documentation with verified behavior. Capture corrections through `learn`: local decision now, generalized candidate later, global activation only after batch approval. Return the result and material verification limits concisely.
+5. Reconcile every canonical project document affected by verified behavior, including task state, decisions and handoff or changelog when present. Do not create duplicate records or update unrelated documents. Capture corrections through `learn`: local decision now, generalized candidate later, global activation only after batch approval. Return the result and material verification limits concisely.
 
-Use [project setup and continuity](references/onboarding.md) for a new directory or existing onboarding records. Use [runtime and model policy](references/runtime.md) for dispatch details. Never infer completion from subagent summaries or a green build alone.
+Use [project setup and continuity](references/project-setup.md) for a new directory or existing project records. Use [runtime and model policy](references/runtime.md) for dispatch details. Never infer completion from subagent summaries or a green build alone.
 
 Apply [automatic feedback learning](references/feedback.md) on every relevant correction or “remember” request, including later messages. Capture and curate internally; require the agreed batch approval before publishing global lessons.
