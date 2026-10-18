@@ -15,16 +15,6 @@
       "hooks": [
         {
           "type": "command",
-          "command": "\"/opt/homebrew/bin/node\" \"/Users/berserk/.claude/hooks/caveman-mode-tracker.js\"",
-          "timeout": 5,
-          "statusMessage": "Tracking caveman mode..."
-        }
-      ]
-    },
-    {
-      "hooks": [
-        {
-          "type": "command",
           "command": "/Users/berserk/.claude/hooks/answer-shape-prefix.py",
           "timeout": 10
         }

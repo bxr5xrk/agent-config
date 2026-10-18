@@ -97,11 +97,9 @@ not installed.
 - `answer-review.py` — `MessageDisplay` hides a reply longer than 400 characters,
   reviews it with Opus against example pairs, and `PostToolUse`/`Stop` ask the
   agent to rewrite it; state lives in `~/.claude/state/answer-review/`.
-- `answer-shape-prefix.py` — prompt prefixes `так/ні:`, `рішення:`, `аудит:` set
-  the answer shape.
+- `answer-shape-prefix.py` — adds the rule against remarks about shared secrets
+  to every prompt; prefixes `так/ні:`, `рішення:`, `аудит:` set the answer shape.
 - `answer-shape-log.py` — logs answer-shape violations without blocking.
-- `caveman-mode-tracker.js` — the caveman plugin tracker with the local per-turn
-  rule; install caveman first, then replace its tracker.
 - `settings.hooks.json` — the matching `hooks` entries for
   `~/.claude/settings.json`; merge them, do not overwrite the file.
 
@@ -111,8 +109,7 @@ build new pairs from rejected («коротше») and accepted replies.
 
 ```sh
 mkdir -p ~/.claude/hooks ~/.claude/skills
-for f in answer-review.py answer-shape-prefix.py answer-shape-log.py \
-  caveman-mode-tracker.js; do
+for f in answer-review.py answer-shape-prefix.py answer-shape-log.py; do
   ln -f "/Users/berserk/Work/agent-config/hooks/claude/$f" "$HOME/.claude/hooks/$f"
 done
 ln -f /Users/berserk/Work/agent-config/skills/work/answer-review/answer-review-pairs.json \
