@@ -1,0 +1,66 @@
+{
+  "PostToolUse": [
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "/Users/berserk/.claude/hooks/answer-review.py",
+          "timeout": 10
+        }
+      ]
+    }
+  ],
+  "UserPromptSubmit": [
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "\"/opt/homebrew/bin/node\" \"/Users/berserk/.claude/hooks/caveman-mode-tracker.js\"",
+          "timeout": 5,
+          "statusMessage": "Tracking caveman mode..."
+        }
+      ]
+    },
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "/Users/berserk/.claude/hooks/answer-shape-prefix.py",
+          "timeout": 10
+        }
+      ]
+    }
+  ],
+  "Stop": [
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "/Users/berserk/.claude/hooks/answer-shape-log.py",
+          "timeout": 10,
+          "statusMessage": "Logging answer shape"
+        }
+      ]
+    },
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "/Users/berserk/.claude/hooks/answer-review.py",
+          "timeout": 10
+        }
+      ]
+    }
+  ],
+  "MessageDisplay": [
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "/Users/berserk/.claude/hooks/answer-review.py",
+          "timeout": 240
+        }
+      ]
+    }
+  ]
+}

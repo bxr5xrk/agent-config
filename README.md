@@ -8,8 +8,11 @@ workflows.
 ```text
 AGENTS.md      global instructions and orchestration policy
 hooks/         active prompt hook configuration and implementation
+  claude/       Claude Code answer-review and answer-shape hooks
 skills/
   common/       brainstorm, caveman-uk, diagram-design, grill-me, grilling
+  work/         gitignored: employer-private skills and data (pr-visual,
+                answer-review pairs); never pushed
   personal/     backend, build, designer, frontend, growth, ops,
                 qa, research, security, skill-to-agent,
                 Emil Kowalski design and animation skills
@@ -86,6 +89,40 @@ The seven design and animation skills above are preserved from
 MIT license. The `designer` and `frontend` skills route relevant work to them;
 direct invocation remains available. `apple-design` and `pick-ui-library` are
 not installed.
+
+## Claude Code answer hooks
+
+`hooks/claude/` keeps the hooks that shorten Claude Code replies:
+
+- `answer-review.py` — `MessageDisplay` hides a reply longer than 400 characters,
+  reviews it with Opus against example pairs, and `PostToolUse`/`Stop` ask the
+  agent to rewrite it; state lives in `~/.claude/state/answer-review/`.
+- `answer-shape-prefix.py` — prompt prefixes `так/ні:`, `рішення:`, `аудит:` set
+  the answer shape.
+- `answer-shape-log.py` — logs answer-shape violations without blocking.
+- `caveman-mode-tracker.js` — the caveman plugin tracker with the local per-turn
+  rule; install caveman first, then replace its tracker.
+- `settings.hooks.json` — the matching `hooks` entries for
+  `~/.claude/settings.json`; merge them, do not overwrite the file.
+
+The review examples are real work chats, so
+`skills/work/answer-review/answer-review-pairs.json` is gitignored. Without it,
+build new pairs from rejected («коротше») and accepted replies.
+
+```sh
+mkdir -p ~/.claude/hooks ~/.claude/skills
+for f in answer-review.py answer-shape-prefix.py answer-shape-log.py \
+  caveman-mode-tracker.js; do
+  ln -f "/Users/berserk/Work/agent-config/hooks/claude/$f" "$HOME/.claude/hooks/$f"
+done
+ln -f /Users/berserk/Work/agent-config/skills/work/answer-review/answer-review-pairs.json \
+  ~/.claude/hooks/answer-review-pairs.json
+ln -sfn /Users/berserk/Work/agent-config/skills/work/pr-visual \
+  ~/.claude/skills/pr-visual
+```
+
+The Codex port is not done yet; it needs Codex hook events that can hide or
+replace a reply.
 
 ## Codex agents
 
