@@ -26,6 +26,8 @@ Read only the references relevant to the change:
 
 Implement complete applicable states and verify the actual user journey in a browser, including a meaningful failure case. For layout changes inspect the rendered result at relevant sizes; passing types or a build does not establish visual quality. Keep private administration focused on task completion; add discovery metadata or decorative motion only when the product needs it.
 
+When implementing requested web motion, follow the [designer's motion procedure](../designer/internal/motion/ROLE.md) and the focused [animate](../animate/SKILL.md) skill; use [review-animations](../review-animations/SKILL.md) for a requested motion review. Preserve the approved design and existing project tokens.
+
 Finish using the [closeout contract](../build/references/closeout.md): a standalone builder owns independent review, repair and relevant learning candidates; a delegated builder returns them to its orchestration owner. Update affected project contracts and return changed behavior, verification evidence and material gaps. Global lessons require separate approval.
 
 Apply [automatic feedback learning](../build/references/feedback.md) throughout follow-up corrections and “remember” requests; the user does not invoke internal reviewers or learning commands.

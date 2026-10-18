@@ -11,7 +11,8 @@ hooks/         active prompt hook configuration and implementation
 skills/
   common/       brainstorm, caveman-uk, diagram-design, grill-me, grilling
   personal/     backend, build, designer, frontend, growth, ops,
-                qa, research, security, skill-to-agent
+                qa, research, security, skill-to-agent,
+                Emil Kowalski design and animation skills
 agents/
   advisor-agent/ persistent final reviewer profile and Codex agent config
   *-agent/      persistent specialist profile and Codex agent config
@@ -48,6 +49,11 @@ ln -sfn /Users/berserk/Work/agent-config/skills/common/caveman-uk \
   ~/.agents/skills/caveman-uk
 ln -sfn /Users/berserk/Work/agent-config/skills/common/diagram-design \
   ~/.agents/skills/diagram-design
+for skill in emil-design-eng animate review-animations improve-animations \
+  find-animation-opportunities prototype animation-vocabulary; do
+  ln -sfn "/Users/berserk/Work/agent-config/skills/personal/$skill" \
+    "$HOME/.agents/skills/$skill"
+done
 ln -f /Users/berserk/Work/agent-config/hooks/hooks.json ~/.codex/hooks.json
 ln -f /Users/berserk/Work/agent-config/hooks/task_contract.py \
   ~/.codex/hooks/task_contract.py
@@ -73,6 +79,13 @@ checks focused, discovery, and delivery answers; fast answers skip it.
 
 Use `$diagram-design` for complex explanatory or presentation-quality diagrams.
 Use built-in diagramming for simple diagrams with only a few blocks.
+
+The seven design and animation skills above are preserved from
+[emilkowalski/skills](https://github.com/emilkowalski/skills) at commit
+`d16ebe60d09a5ba2afcb7054ede9d0a10c9f6128`. Each directory includes its
+MIT license. The `designer` and `frontend` skills route relevant work to them;
+direct invocation remains available. `apple-design` and `pick-ui-library` are
+not installed.
 
 ## Codex agents
 
