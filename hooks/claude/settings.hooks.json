@@ -19,6 +19,15 @@
           "timeout": 10
         }
       ]
+    },
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "/Users/berserk/.claude/hooks/answer-review.py",
+          "timeout": 10
+        }
+      ]
     }
   ],
   "Stop": [
@@ -49,6 +58,18 @@
           "type": "command",
           "command": "/Users/berserk/.claude/hooks/answer-review.py",
           "timeout": 240
+        }
+      ]
+    }
+  ],
+  "PreToolUse": [
+    {
+      "matcher": "AskUserQuestion",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "/Users/berserk/.claude/hooks/answer-review.py",
+          "timeout": 10
         }
       ]
     }
