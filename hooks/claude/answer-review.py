@@ -20,7 +20,7 @@ REWRITE_BEFORE_ASK = ("The developer cannot see the message you wrote before thi
 REWRITE_BEFORE_PROMPT = ("The developer never saw your last message: it was hidden for review and the turn ended before the rewrite. "
                          "Start your reply with that message rewritten in full, applying this reviewer feedback, then answer the new prompt. "
                          "Apply every DELETE fully: the deleted content must not come back in any wording. Do not mention the review or the draft.\n\n")
-SYS = """You review a coding agent's draft reply before the developer sees it. Your feedback goes back to the agent, which rewrites the reply. You do not see the agent's work, only PROMPT and DRAFT.
+SYS = """You review a coding agent's draft reply before the developer sees it. Your feedback goes back to the agent, which rewrites the reply. You do not see the agent's work, only EARLIER PROMPTS, PROMPT and DRAFT. EARLIER PROMPTS are the developer's previous messages in the same chat, oldest first; a format, limit or question set there still applies unless PROMPT changes it.
 
 The developer considers these unimportant. Mark every one for deletion, even when true, serious or interesting:
 - what the agent checked, ran, read, tested, merged, booted, sampled, compared, and with which tools, DBs, versions or environments — unless a check failed in a way that changes the answer;
@@ -31,6 +31,7 @@ The developer considers these unimportant. Mark every one for deletion, even whe
 - bold labels per bullet, headers, lists where two or three sentences do.
 - any remark that the developer shared a secret, password, key, token or connection URI in the chat, and any advice to rotate it.
 Never mark for deletion:
+- the shape the developer asked for or showed in PROMPT or EARLIER PROMPTS (a sample, «по пунктах», «буквально: 1. … 2. …», a table): keep that shape and shorten inside it; never turn it into prose;
 - the direct answer to each ask in PROMPT, values asked for, and the one short reason clause that makes a yes/no or decision understandable;
 - blockers and bad news about the asked thing, steps the developer must perform;
 - any sentence about the asked subject that carries a hypothesis or «не перевіряв» label — shorten it, never delete it;
@@ -49,29 +50,33 @@ Never justify a deletion by guessing what the developer already knows, decided o
 If DRAFT is already right, output: OK"""
 
 
-def review(prompt, draft):
+def review(prompts, draft):
     pairs = json.loads((HERE / "answer-review-pairs.json").read_text())
     shown = "\n\n---\n\n".join(f"PROMPT: {p['prompt']}\nREJECTED («коротше»):\n{p['rejected']}\nACCEPTED:\n{p['accepted']}" for p in pairs)
+    earlier = "\n\n".join(f"- {prompt[:1500]}" for prompt in prompts[:-1]) or "(none)"
     run = subprocess.run(
         ["claude", "-p", "--setting-sources", "", "--model", "claude-opus-5-5", "--tools", "", "--no-session-persistence",
-         "--system-prompt", SYS.replace("{pairs}", shown), f"PROMPT:\n{prompt}\n\nDRAFT:\n{draft}"],
+         "--system-prompt", SYS.replace("{pairs}", shown), f"EARLIER PROMPTS:\n{earlier}\n\nPROMPT:\n{prompts[-1]}\n\nDRAFT:\n{draft}"],
         capture_output=True, text=True, timeout=240)
     feedback = run.stdout.strip()
     return "" if run.returncode or feedback == "OK" else feedback
 
 
-def last_prompt(transcript_path):
-    prompt = ""
+def last_prompts(transcript_path):
+    prompts = [""]
     for line in open(transcript_path, errors="ignore"):
         entry = json.loads(line)
         if entry.get("type") != "user" or entry.get("isMeta") or entry.get("isSidechain"):
             continue
         content = entry["message"].get("content")
         if isinstance(content, str):
-            prompt = content
+            if not content.startswith(("<task-notification", "<system-reminder", "<command-", "<local-command")):
+                prompts.append(content)
         elif not any(block.get("type") == "tool_result" for block in content):
-            prompt = "\n".join(block.get("text", "") for block in content if block.get("type") == "text") or prompt
-    return prompt
+            text = "\n".join(block.get("text", "") for block in content if block.get("type") == "text")
+            if text:
+                prompts.append(text)
+    return prompts[-4:]
 
 
 def on_display(payload, state_file, state):
@@ -82,7 +87,7 @@ def on_display(payload, state_file, state):
         return
     if payload.get("index") != 0 or not payload.get("final") or len(text) <= MIN_CHARS:
         return
-    feedback = review(last_prompt(payload["transcript_path"]), text)
+    feedback = review(last_prompts(payload["transcript_path"]), text)
     if not feedback:
         return
     state_file.write_text(json.dumps({"phase": "pending", "feedback": feedback}))
