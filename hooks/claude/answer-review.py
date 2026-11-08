@@ -2,12 +2,15 @@
 """Hides a long draft reply, reviews it with a second model and makes Claude rewrite it before the turn goes on."""
 import json
 import pathlib
+import re
 import subprocess
 import sys
 
 HERE = pathlib.Path(__file__).resolve().parent
 STATE = pathlib.Path.home() / ".claude" / "state" / "answer-review"
 MIN_CHARS = 400
+UNVERIFIED = re.compile(r"не перевіря|не знайш|не дивився", re.IGNORECASE)
+DO_CHECKS = "First do every CHECK line with your tools; the reply states what you found there instead of «не перевіряв». "
 PLACEHOLDER = "_Відповідь переписується після рев'ю…_"
 REWRITE_FINAL = ("The developer has not seen your last message: it was hidden for review. Write it again in full, "
                  "applying this reviewer feedback. Apply every DELETE fully: the deleted content must not come back in any wording. Do not mention the review or the draft.\n\n")
@@ -20,7 +23,7 @@ REWRITE_BEFORE_ASK = ("The developer cannot see the message you wrote before thi
 REWRITE_BEFORE_PROMPT = ("The developer never saw your last message: it was hidden for review and the turn ended before the rewrite. "
                          "Start your reply with that message rewritten in full, applying this reviewer feedback, then answer the new prompt. "
                          "Apply every DELETE fully: the deleted content must not come back in any wording. Do not mention the review or the draft.\n\n")
-SYS = """You review a coding agent's draft reply before the developer sees it. Your feedback goes back to the agent, which rewrites the reply. You do not see the agent's work, only EARLIER PROMPTS, PROMPT and DRAFT. EARLIER PROMPTS are the developer's previous messages in the same chat, oldest first; a format, limit or question set there still applies unless PROMPT changes it.
+SYS = """You review a coding agent's draft reply before the developer sees it. Your feedback goes back to the agent, which rewrites the reply. You do not see the agent's work, only EARLIER PROMPTS, PROMPT, TOOL CALLS (what the agent ran this turn) and DRAFT. EARLIER PROMPTS are the developer's previous messages in the same chat, oldest first; a format, limit or question set there still applies unless PROMPT changes it.
 
 The developer considers these unimportant. Mark every one for deletion, even when true, serious or interesting:
 - what the agent checked, ran, read, tested, merged, booted, sampled, compared, and with which tools, DBs, versions or environments — unless a check failed in a way that changes the answer;
@@ -46,17 +49,32 @@ Below are the developer's real cases: the reply they rejected with «корот�
 Output only feedback lines, one per change, in this form:
 DELETE: «short quote» — why
 SHORTEN: «short quote» — to what
+CHECK: «short quote» — what to open and where
+Use CHECK only when DRAFT says something was not checked, not found or does not exist, it lives in a repo, branch, PR, file or service the agent can open (a sibling repo in the same parent folder, a git remote branch, GitHub via gh), and TOOL CALLS show the agent did not look there. Never CHECK production databases, deployed services or anything that needs credentials.
 Never justify a deletion by guessing what the developer already knows, decided or will not change.
 If DRAFT is already right, output: OK"""
 
 
-def review(prompts, draft):
+def tool_calls(transcript_path):
+    calls = []
+    for line in open(transcript_path, errors="ignore"):
+        entry = json.loads(line)
+        content = (entry.get("message") or {}).get("content")
+        if entry.get("type") == "user" and not entry.get("isMeta") and isinstance(content, str):
+            calls = []
+        elif entry.get("type") == "assistant" and isinstance(content, list):
+            calls += [f"{block['name']}: {json.dumps(block.get('input'), ensure_ascii=False)[:200]}"
+                      for block in content if block.get("type") == "tool_use"]
+    return "\n".join(calls[-60:]) or "(none)"
+
+
+def review(prompts, calls, draft):
     pairs = json.loads((HERE / "answer-review-pairs.json").read_text())
     shown = "\n\n---\n\n".join(f"PROMPT: {p['prompt']}\nREJECTED («коротше»):\n{p['rejected']}\nACCEPTED:\n{p['accepted']}" for p in pairs)
     earlier = "\n\n".join(f"- {prompt[:1500]}" for prompt in prompts[:-1]) or "(none)"
     run = subprocess.run(
         ["claude", "-p", "--setting-sources", "", "--model", "claude-opus-5-5", "--tools", "", "--no-session-persistence",
-         "--system-prompt", SYS.replace("{pairs}", shown), f"EARLIER PROMPTS:\n{earlier}\n\nPROMPT:\n{prompts[-1]}\n\nDRAFT:\n{draft}"],
+         "--system-prompt", SYS.replace("{pairs}", shown), f"EARLIER PROMPTS:\n{earlier}\n\nPROMPT:\n{prompts[-1]}\n\nTOOL CALLS:\n{calls}\n\nDRAFT:\n{draft}"],
         capture_output=True, text=True, timeout=240)
     feedback = run.stdout.strip()
     return "" if run.returncode or feedback == "OK" else feedback
@@ -85,19 +103,23 @@ def on_display(payload, state_file, state):
         if state["phase"] == "rewriting":
             state_file.unlink()
         return
-    if payload.get("index") != 0 or not payload.get("final") or len(text) <= MIN_CHARS:
+    if payload.get("index") != 0 or not payload.get("final") or (len(text) <= MIN_CHARS and not UNVERIFIED.search(text)):
         return
-    feedback = review(last_prompts(payload["transcript_path"]), text)
+    feedback = review(last_prompts(payload["transcript_path"]), tool_calls(payload["transcript_path"]), text)
     if not feedback:
         return
     state_file.write_text(json.dumps({"phase": "pending", "feedback": feedback}))
     sys.stdout.write(json.dumps({"hookSpecificOutput": {"hookEventName": "MessageDisplay", "displayContent": PLACEHOLDER}}))
 
 
+def checks(state):
+    return DO_CHECKS if "CHECK:" in state["feedback"] else ""
+
+
 def ask_rewrite(event, state_file, state, intro):
     state["phase"] = "rewriting"
     state_file.write_text(json.dumps(state))
-    sys.stdout.write(json.dumps({"hookSpecificOutput": {"hookEventName": event, "additionalContext": intro + state["feedback"]}},
+    sys.stdout.write(json.dumps({"hookSpecificOutput": {"hookEventName": event, "additionalContext": checks(state) + intro + state["feedback"]}},
                                 ensure_ascii=False))
 
 
@@ -105,7 +127,7 @@ def deny_question(state_file, state):
     state["phase"] = "rewriting"
     state_file.write_text(json.dumps(state))
     sys.stdout.write(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
-                                                        "permissionDecisionReason": REWRITE_BEFORE_ASK + state["feedback"]}},
+                                                        "permissionDecisionReason": checks(state) + REWRITE_BEFORE_ASK + state["feedback"]}},
                                 ensure_ascii=False))
 
 

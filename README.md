@@ -94,9 +94,11 @@ not installed.
 
 `hooks/claude/` keeps the hooks that shorten Claude Code replies:
 
-- `answer-review.py` — `MessageDisplay` hides a reply longer than 400 characters,
-  reviews it with Opus against example pairs, and `PostToolUse`/`Stop` ask the
-  agent to rewrite it; state lives in `~/.claude/state/answer-review/`.
+- `answer-review.py` — `MessageDisplay` hides a reply longer than 400 characters
+  or one that says something was not checked, reviews it with Opus against
+  example pairs and the turn's tool calls, and `PostToolUse`/`Stop` ask the
+  agent to rewrite it; a `CHECK` line first sends the agent back to its tools
+  for what it could have checked; state lives in `~/.claude/state/answer-review/`.
 - `answer-shape-prefix.py` — adds the rule against remarks about shared secrets
   and the explanation formats (tester text, status line, Compass command,
   frontend needs, «коротко», side findings, «не перевіряв» placement, code
