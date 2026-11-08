@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Hides a long draft reply, reviews it with a second model and makes Claude rewrite it before the turn goes on."""
+import importlib.util
 import json
 import pathlib
 import re
@@ -20,6 +21,9 @@ REWRITE_BEFORE_TOOL = ("The developer has not seen the message you wrote before 
 REWRITE_BEFORE_ASK = ("The developer cannot see the message you wrote before this question: it is hidden for review. "
                       "Write that message again in full, applying this reviewer feedback, then ask the same question again. "
                       "Apply every DELETE fully: the deleted content must not come back in any wording. Do not mention the review or the draft.\n\n")
+REWRITE_MISSING = ("The developer still sees no text before this question: your rewritten message was not output as visible text. "
+                   "Output the rewritten message as a text block first, then ask the same question again in the same reply. "
+                   "Apply every DELETE fully: the deleted content must not come back in any wording. Do not mention the review or the draft.\n\n")
 REWRITE_BEFORE_PROMPT = ("The developer never saw your last message: it was hidden for review and the turn ended before the rewrite. "
                          "Start your reply with that message rewritten in full, applying this reviewer feedback, then answer the new prompt. "
                          "Apply every DELETE fully: the deleted content must not come back in any wording. Do not mention the review or the draft.\n\n")
@@ -97,15 +101,29 @@ def last_prompts(transcript_path):
     return prompts[-4:]
 
 
+def banned_phrases(text):
+    spec = importlib.util.spec_from_file_location("answer_shape_log", HERE / "answer-shape-log.py")
+    shape = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(shape)
+    lower = shape.prose_only(text).lower()
+    return [f"DELETE: «{phrase.strip()}» — banned phrase; keep any failure, exception or number from the same sentence"
+            for phrase in shape.BANNED_PHRASES if re.search(rf"(?<!\w){re.escape(phrase.strip())}(?!\w)", lower)]
+
+
 def on_display(payload, state_file, state):
     text = payload.get("delta") or ""
     if state:
         if state["phase"] == "rewriting":
             state_file.unlink()
         return
-    if payload.get("index") != 0 or not payload.get("final") or (len(text) <= MIN_CHARS and not UNVERIFIED.search(text)):
+    if payload.get("index") != 0 or not payload.get("final"):
         return
-    feedback = review(last_prompts(payload["transcript_path"]), tool_calls(payload["transcript_path"]), text)
+    lint = banned_phrases(text)
+    short = len(text) <= MIN_CHARS and not UNVERIFIED.search(text)
+    if short and not lint:
+        return
+    reviewed = "" if short else review(last_prompts(payload["transcript_path"]), tool_calls(payload["transcript_path"]), text)
+    feedback = "\n".join(line for line in [reviewed, *lint] if line)
     if not feedback:
         return
     state_file.write_text(json.dumps({"phase": "pending", "feedback": feedback}))
@@ -123,11 +141,12 @@ def ask_rewrite(event, state_file, state, intro):
                                 ensure_ascii=False))
 
 
-def deny_question(state_file, state):
+def deny_question(state_file, state, intro):
+    state["retried"] = state["phase"] == "rewriting"
     state["phase"] = "rewriting"
     state_file.write_text(json.dumps(state))
     sys.stdout.write(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
-                                                        "permissionDecisionReason": checks(state) + REWRITE_BEFORE_ASK + state["feedback"]}},
+                                                        "permissionDecisionReason": checks(state) + intro + state["feedback"]}},
                                 ensure_ascii=False))
 
 
@@ -140,8 +159,11 @@ def main():
     if event == "MessageDisplay":
         on_display(payload, state_file, state)
     elif event == "PreToolUse":
-        if state and state["phase"] == "pending" and payload.get("tool_name") == "AskUserQuestion":
-            deny_question(state_file, state)
+        if state and payload.get("tool_name") == "AskUserQuestion":
+            if state["phase"] == "pending":
+                deny_question(state_file, state, REWRITE_BEFORE_ASK)
+            elif not state.get("retried"):
+                deny_question(state_file, state, REWRITE_MISSING)
     elif event == "UserPromptSubmit":
         if state and state["phase"] == "pending":
             ask_rewrite(event, state_file, state, REWRITE_BEFORE_PROMPT)
