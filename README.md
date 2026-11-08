@@ -99,7 +99,8 @@ not installed.
   agent to rewrite it; state lives in `~/.claude/state/answer-review/`.
 - `answer-shape-prefix.py` — adds the rule against remarks about shared secrets
   and the explanation formats (tester text, status line, Compass command,
-  frontend needs) to every prompt; prefixes `так/ні:`, `рішення:`, `аудит:` set
+  frontend needs, «коротко», side findings, «не перевіряв» placement, code
+  change report) to every prompt; prefixes `так/ні:`, `рішення:`, `аудит:` set
   the answer shape.
 - `answer-shape-log.py` — logs answer-shape violations without blocking.
 - `push-merged-pr-guard.sh` — blocks `git push` to a branch whose PR is already
