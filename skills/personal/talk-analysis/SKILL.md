@@ -15,6 +15,9 @@ The output is a short report on the talk followed by three practical recommendat
 
 Save everything under `/tmp/talk-analysis/<videoId>/`.
 
+- Take talk content from MCP `ai-engineer`, not from the site HTML.
+- Latest N talks: MCP records have no publish date, and the newest talks have `event: null` and empty `topics`, so MCP filters miss them. Get the order from the site catalog: read the `"release"` hash from `curl -s https://ai.engineer/talks`, then `curl -s 'https://ai.engineer/api/talks/catalog?release=<hash>'` (without `release` it returns 400). Rows of `packedCatalog.r` start with `[id, slug, title, publishedAt, durationMs, videoId, …]`; sort by `publishedAt` descending and take N. The MCP ID is `talk:<slug>`; fetch everything else from MCP.
+
 - Transcript with timestamps. AI Engineer talks: MCP `ai-engineer` → `search` by the talk title (the MCP ID differs from the YouTube video ID), then `fetch` with `section: transcript`. If it returns `transcriptStatus: not_available`, pull YouTube captions: `uvx --from youtube-transcript-api youtube_transcript_api <videoId> --languages en --format json`, then convert the JSON (a nested list `[[{text, start, duration}]]`) to plain text with `[m:ss]` timestamps.
 - The talk page article: `curl` the talk URL, parse `__NEXT_DATA__`, read `props.pageProps.model.resources.article` (sections, keyTakeaways, resources).
 - The video description (chapters, links): `uvx yt-dlp --skip-download --write-description -o '/tmp/talk-analysis/<videoId>/%(id)s.%(ext)s' <url>`.
@@ -37,8 +40,7 @@ Read the live state, not memory:
 - skills and plugins: `~/.claude/skills` (plain folders plus symlinks into `~/Work/agent-config`, `~/.cursor/skills`, `~/.agents/skills`), `~/.claude/plugins/installed_plugins.json`. Some live hooks are hard links to their `agent-config` copy (same inode, check with `ls -i`);
 - logs: `~/.claude/answer-shape.log`, session transcripts `~/.claude/projects/**/*.jsonl` (thousands of files, several GB);
 - memory and recurring jobs: `~/.claude/projects/*/memory/`, `autoMemoryEnabled` in `~/.claude/settings.json`, `~/Work/agent-config/scheduled/`, `~/.codex/automations/`;
-- for work-related mechanisms, the relevant repos under `~/Dev/choice` and their `.github/workflows`;
-- `decisions.md` next to this file: actions the user already accepted or declined.
+- for work-related mechanisms, the relevant repos under `~/Dev/choice` and their `.github/workflows`.
 
 ## 4. Map each mechanism
 
@@ -67,8 +69,6 @@ Each item gets the action that closes the gap, where it goes (live file and cano
 - try: a gap exists but evidence is weak, the cost is unknown, or the measurement is a loose proxy;
 - not applicable: one line, including gaps too rare to pay for the change.
 
-Drop any action listed as declined in `decisions.md` unless new data changes the case.
-
 ## Answer format
 
 1. Report, plain text without headers: the talk's thesis in one or two sentences, then the mechanisms with their evidence (study numbers with model and format version, demo, or opinion).
@@ -77,4 +77,4 @@ Drop any action listed as declined in `decisions.md` unless new data changes the
 
 ## After the user chooses
 
-Apply each chosen recommendation. For a hook edited with the Edit tool, restore its hard link to the `agent-config` copy (`cat live > canonical && ln -f canonical live`). Back up a rules file before editing it. Then add every chosen and unchosen recommendation, with the date and talk title, to `decisions.md`.
+Apply each chosen recommendation. For a hook edited with the Edit tool, restore its hard link to the `agent-config` copy (`cat live > canonical && ln -f canonical live`). Back up a rules file before editing it.
