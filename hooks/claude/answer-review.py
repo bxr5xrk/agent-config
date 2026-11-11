@@ -2,13 +2,14 @@
 """Hides a long draft reply, reviews it with a second model and makes Claude rewrite it before the turn goes on."""
 import importlib.util
 import json
+import os
 import pathlib
 import re
 import subprocess
 import sys
 
 HERE = pathlib.Path(__file__).resolve().parent
-STATE = pathlib.Path.home() / ".claude" / "state" / "answer-review"
+STATE = pathlib.Path(os.environ.get("CLAUDE_CONFIG_DIR") or pathlib.Path.home() / ".claude") / "state" / "answer-review"
 MIN_CHARS = 400
 UNVERIFIED = re.compile(r"не перевіря|не знайш|не дивився", re.IGNORECASE)
 DO_CHECKS = "First do every CHECK line with your tools; the reply states what you found there instead of «не перевіряв». "

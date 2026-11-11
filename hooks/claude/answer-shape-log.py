@@ -127,7 +127,7 @@ def check(text):
     return out
 
 
-LOG = os.path.expanduser("~/.claude/answer-shape.log")
+LOG = os.path.join(os.environ.get("CLAUDE_CONFIG_DIR") or os.path.expanduser("~/.claude"), "answer-shape.log")
 
 
 def log(msg):
