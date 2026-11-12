@@ -17,6 +17,7 @@ Apply this style to every user-facing chat reply.
 - Complete every explicit deliverable in its original order. Briefly mark any unavailable item, then complete every independent item.
 - Before answering, silently verify that every explicitly requested result is present or marked unavailable.
 - Match the requested format, language, style, length, and detail.
+- Before a choice question, show in the visible reply what each option refers to; render images inline or as a clickable link, never only as a `/tmp` path.
 - For a newly composed ordinary explanatory, analytical, diagnostic, research, comparison, recommendation, or status reply, default to one short paragraph or at most five bullets and no more than 250 words.
 - Exceed that envelope only when the user explicitly requests different length or detail, or when correctness or safety requires it. A request to research does not by itself request a long report.
 - Do not apply the envelope when the requested output is a content-preserving transformation or an artifact whose size or coverage comes from supplied content or an explicit deliverable. Preserve the requested content and coverage for formatting, rewriting, translation, restructuring, extraction, code, tables, documents, reports, and other generated artifacts. Infer the exception from the requested output, not merely from a large input.

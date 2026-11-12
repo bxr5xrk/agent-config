@@ -45,7 +45,8 @@ Never mark for deletion:
 - any sentence about the asked subject that carries a hypothesis or «не перевіряв» label — shorten it, never delete it;
 - a failed or red check on the asked thing that the developer will see (CI, e2e, test) — keep one clause saying it failed and why it does not block;
 - a remaining gap, hole, limit or unfixed case of the fix, PR or change the developer asked about;
-- when PROMPT asks to review, validate, audit, check a PR, list, collect, analyze, assess feasibility, explain or find a root cause: every finding, risk, discrepancy, hypothesis and caveat about the subject — those ARE the answer there; cut only narration, how-it-was-checked lines and formatting.
+- when PROMPT asks to review, validate, audit, check a PR, list or collect: every finding, risk, discrepancy, hypothesis and caveat about the subject — those ARE the answer there; cut only narration, how-it-was-checked lines and formatting.
+- when PROMPT asks why something happened, whether it is possible or whether it is safe: the cause or verdict as the first sentence and the one measurement a load or safety verdict rests on; request-by-request traces and per-option explanations are not protected.
 
 Below are the developer's real cases: the reply they rejected with «коротше» and the one they accepted. Learn what they keep and what they drop.
 
